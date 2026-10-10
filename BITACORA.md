@@ -329,7 +329,60 @@ Con el primer análisis cerrado busqué dos cosas: de qué se está hablando hoy
 - La espera entre terminar la fractura y empezar a producir bajó de 38 días a 12.
 - Los pozos de gas trabajan 22 días por mes en julio y agosto, y 16 o 17 entre octubre y diciembre. En diciembre el 23 % no produce nada.
 
-## 17. Lo que sigue
+## 17. Pregunta 7: lo que pasa bajo tierra
+
+*10 de octubre de 2026*
+
+Me había quedado abierta la interferencia entre pozos vecinos, porque solo tenía la ubicación de las bocas. Sumé el dataset de trayectorias: el recorrido de cada rama y el nivel de la roca en el que navega.
+
+**Qué tuve que resolver para usarlo:**
+
+- **Los códigos del nivel no venían explicados.** Los encontré en una tabla del instructivo oficial de la Secretaría: la formación se divide en seis unidades numeradas desde abajo. U1 es Vaca Muerta Inferior y U2 y U3 son Vaca Muerta Medio. El 96 % de los pozos navega en U1 o U2.
+- **460 filas no tenían código de pozo.** Las enlacé por la sigla.
+- **La fuente da el recorrido completo desde la superficie, sin profundidad.** Para quedarme con la rama recorrí cada trazado desde el fondo hacia atrás hasta completar el largo de rama informado, y dejé un punto cada 50 metros. Como control, el largo que sale así coincide con el de la tabla de fracturas (diferencia mediana de cero metros).
+- **Medir distancias entre 75.000 puntos.** La primera versión comparaba todos contra todos y no terminaba. La rehíce dividiendo el mapa en celdas de 1.500 metros y comparando cada punto solo con los de su celda y las ocho de alrededor. Tarda dos minutos.
+- **Dos ramas apiladas a distinta profundidad parecen pegadas vistas desde arriba.** Por eso mido la distancia solo contra ramas del mismo nivel.
+
+**Un límite:** la cobertura es de más del 90 % hasta 2023, pero cae a 44 % en 2024 y 25 % en 2025. Las conclusiones valen sobre todo para 2019 a 2023.
+
+**Lo que encontré:**
+
+**1. El nivel importa, y mucho.** En el mismo lugar, los pozos que navegan en U1 rinden más por kilómetro que los de U2:
+
+| Área | U1 (m³ por km) | U2 (m³ por km) | Diferencia |
+|---|---|---|---|
+| Loma Campana | 18.136 | 12.313 | +47 % |
+| La Amarga Chica | 17.080 | 14.033 | +22 % |
+| Bajada del Palo Oeste | 19.408 | 16.672 | +16 % |
+| Bandurria Sur | 15.526 | 14.062 | +10 % |
+
+**2. La interferencia entre vecinos aparece ahora que mido bien.** En las áreas históricas, según la distancia al pozo padre más cercano del mismo nivel:
+
+| Distancia al padre | U1 (m³ por km) | U2 (m³ por km) |
+|---|---|---|
+| Menos de 300 m | 15.526 | 12.710 |
+| De 300 a 500 m | 17.197 | 13.066 |
+| De 500 a 1.500 m | 18.476 | 14.749 |
+
+Un pozo con un padre a menos de 300 metros rinde alrededor de 15 % menos que uno que lo tiene a más de 500. El escalón se repite en los dos niveles. Con las bocas de pozo esto no se veía; con las ramas sí. Los grupos más cercanos son chicos (23 y 60 pozos), así que el tamaño exacto del efecto es incierto.
+
+**3. Cada vez más pozos nacen al lado de un padre.** En 2019 el 18 % de los pozos nuevos de las áreas históricas tenía un padre del mismo nivel a menos de 500 metros; entre 2021 y 2023, cerca del 40 %. El espaciamiento entre ramas vecinas, en cambio, casi no cambió: unos 290 metros.
+
+**4. Nada de esto alcanza para explicar la caída.** Mirando un solo nivel dentro de las áreas históricas, el rendimiento igual baja: en U1, de 18.885 m³ por km en 2021 a 15.367 en 2024. Y cada vez más pozos van a U1, el nivel bueno, lo que debería empujar para arriba. La interferencia suma, pero afecta a una parte de los pozos y en un 15 %.
+
+**Cómo queda la cuenta de qué pesa más** (pozos desde 2021):
+
+| Se tiene en cuenta | Parte de las diferencias que explica |
+|---|---|
+| Solo el lugar | 18 % |
+| Lugar y nivel | 26 % |
+| Lugar, nivel y arena | cerca de 39 % |
+
+Sumar el nivel de navegación me lleva de 35 % a 39 %. Sigue quedando un 60 % sin explicar.
+
+**Mi lectura:** el lugar en el mapa no alcanzaba porque faltaba la tercera dimensión. Dentro de una misma área hay roca mejor y peor según la profundidad, y eso se ve en los datos. La caída del rendimiento por kilómetro sigue sin una causa única: irse a zonas nuevas explica un poco, la interferencia otro poco, y el resto queda abierto.
+
+## 18. Lo que sigue
 
 - Armar y publicar el tablero en Tableau Public.
-- Elegir con qué preguntas nuevas seguir.
+- Preguntas ya probadas por arriba: la velocidad de la "fábrica" de pozos y la estacionalidad del gas.

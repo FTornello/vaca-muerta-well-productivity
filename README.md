@@ -1,6 +1,6 @@
 # ¿Qué hace que un pozo de Vaca Muerta rinda más?
 
-Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abiertos de la Secretaría de Energía de Argentina: producción mes a mes de cada pozo y diseño de cada fractura, de 2006 a agosto de 2026.
+Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abiertos de la Secretaría de Energía de Argentina: producción mes a mes de cada pozo, diseño de cada fractura y recorrido de cada rama bajo tierra, de 2006 a agosto de 2026.
 
 ## La respuesta corta
 
@@ -30,14 +30,15 @@ Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abier
 
 ## Por qué pasa
 
-Busqué qué dicen otras fuentes y puse a prueba cuatro explicaciones con los mismos datos:
+Busqué qué dicen otras fuentes, puse a prueba cada explicación con los datos y sumé el recorrido bajo tierra de cada pozo:
 
 - **Los números coinciden con los de la industria.** La consultora FDC estimó la producción a 365 días del pozo tipo en 17.000 m³ para 2016 y 27.800 para 2018; mis medianas dan 17.323 y 27.125.
 - **"Se perfora en zonas menos buenas" explica solo una parte.** La caída por kilómetro ocurre sobre todo dentro de las cuatro áreas históricas (de 17.211 a 13.212 m³ por km entre 2021 y 2025); en el resto casi no cambió.
 - **No es un efecto de mirar solo 12 meses.** A 24 meses la caída es la misma.
-- **La interferencia entre pozos vecinos no la pude confirmar** con la ubicación de las bocas de pozo. Hace falta el recorrido de las ramas, que la Secretaría también publica.
+- **La interferencia entre pozos vecinos existe, pero no alcanza.** Midiendo la distancia real entre ramas, un pozo con un "padre" del mismo nivel a menos de 300 metros rinde cerca de 15 % menos que uno que lo tiene a más de 500.
+- **El nivel de la roca importa.** En la misma área, los pozos que navegan en la unidad inferior de Vaca Muerta rinden entre 10 % y 47 % más por kilómetro que los de la unidad media. Sumarlo lleva lo explicado de 35 % a 39 %.
 
-El detalle y las fuentes están en la sección 15 de la [bitácora](BITACORA.md).
+El detalle y las fuentes están en las secciones 15 y 17 de la [bitácora](BITACORA.md).
 
 ## Límites
 
@@ -48,7 +49,7 @@ El detalle y las fuentes están en la sección 15 de la [bitácora](BITACORA.md)
 
 ## Cómo está hecho
 
-Tres tablas de la fuente (producción, fractura y padrón de pozos) cargadas en PostgreSQL en dos capas:
+Cuatro tablas de la fuente (producción, fractura, padrón de pozos y trayectorias) cargadas en PostgreSQL en dos capas:
 
 - **`raw`**: los CSV tal cual se publican.
 - **`vm`**: un modelo limpio de seis tablas (`pozo`, `produccion_mensual`, `fractura`, `area`, `empresa`, `operadora`), con ocho controles que verifican que no se perdió nada respecto de la fuente.
@@ -63,6 +64,7 @@ Los valores imposibles no se borran: quedan marcados con su motivo, y cada consu
 | [sql/05_vistas_analisis.sql](sql/05_vistas_analisis.sql) | Vistas de apoyo: edad del pozo y producción del primer año |
 | [sql/analisis/](sql/analisis) | Una consulta por pregunta, más las pruebas de cada explicación |
 | [sql/06_exportar_dashboard.sql](sql/06_exportar_dashboard.sql) | Exporta las tablas que usa el tablero |
+| [sql/07_trayectorias.sql](sql/07_trayectorias.sql) | Carga las trayectorias, arma la rama de cada pozo punto por punto y mide distancias entre vecinos |
 | [scripts/boceto_resultados.py](scripts/boceto_resultados.py) | Genera la imagen de arriba |
 
 Más detalle en el [diccionario de datos](DICCIONARIO.md) y en la [bitácora](BITACORA.md), donde está el razonamiento de cada decisión.
@@ -79,6 +81,7 @@ psql -d vaca_muerta -f sql/02_raw_carga.sql
 psql -d vaca_muerta -f sql/03_capa_limpia.sql
 psql -d vaca_muerta -f sql/04_controles.sql
 psql -d vaca_muerta -f sql/05_vistas_analisis.sql
+psql -d vaca_muerta -f sql/07_trayectorias.sql
 psql -d vaca_muerta -f sql/analisis/p1_curva_tipica.sql
 ```
 
@@ -86,6 +89,6 @@ La fuente se actualiza todos los meses, así que una descarga nueva va a dar nú
 
 ## Fuente
 
-Secretaría de Energía de la Nación, [Producción de petróleo y gas por pozo (Capítulo IV)](http://datos.energia.gob.ar/dataset/produccion-de-petroleo-y-gas-por-pozo) y [Datos de fractura de pozos (Adjunto IV)](http://datos.energia.gob.ar/dataset/datos-de-fractura-de-pozos-adjunto-iv). Unidades: petróleo y agua en m³, gas en miles de m³.
+Secretaría de Energía de la Nación, [Producción de petróleo y gas por pozo (Capítulo IV)](http://datos.energia.gob.ar/dataset/produccion-de-petroleo-y-gas-por-pozo) [Datos de fractura de pozos (Adjunto IV)](http://datos.energia.gob.ar/dataset/datos-de-fractura-de-pozos-adjunto-iv) y [Trayectorias de Pozo Vaca Muerta](http://datos.energia.gob.ar/dataset/trayectoria-de-pozos). Unidades: petróleo y agua en m³, gas en miles de m³.
 
 Francisco Tornello, 2026. Trabajé con Claude Code como asistente.

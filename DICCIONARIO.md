@@ -11,6 +11,8 @@ Qué significa cada tabla y cada columna del modelo limpio (esquema `vm`). Fuent
 - **Declinación:** un pozo shale produce su máximo a los pocos meses y después cae rápido. Por eso hay que perforar pozos nuevos todo el tiempo para sostener la producción.
 - **Área o concesión:** el bloque de terreno que una empresa tiene permiso para explotar (Loma Campana, Fortín de Piedra).
 - **Operadora:** la empresa que perfora y maneja los pozos de un área.
+- **Nivel de navegación:** Vaca Muerta tiene más de 100 metros de espesor y no es pareja. Se divide en seis unidades numeradas desde abajo (U1 a U6). La rama de un pozo "navega" dentro de una de ellas. U1 es la parte inferior, la más rica en materia orgánica.
+- **Pozo padre y pozo hijo:** el padre es un pozo que ya lleva tiempo produciendo; el hijo es uno nuevo que se perfora al lado. El padre ya drenó parte de la roca, y el hijo puede rendir menos.
 
 ## Cómo se conectan las tablas
 
@@ -98,3 +100,36 @@ Referencia para leer los números: 1 metro cúbico de petróleo son 6,29 barrile
 |---|---|
 | `operadora_id` | Identificador del grupo |
 | `nombre` | Nombre comercial (YPF, Vista, Tecpetrol…) |
+
+## `trayectoria`: una fila por pozo con recorrido informado (1.915)
+
+Fuente: Secretaría de Energía, Trayectorias de Pozo Vaca Muerta, descargado el 10 de octubre de 2026. Cubre más del 90 % de los pozos hasta 2023, 44 % de los de 2024 y 25 % de los de 2025.
+
+| Columna | Qué es |
+|---|---|
+| `pozo_id` | A qué pozo corresponde |
+| `unidad` | Unidad donde navega la rama, de 1 (la más profunda) a 6 |
+| `detalle` | Parte de la unidad: 1 inferior, 2 medio, 3 superior |
+| `nivel` | Las dos anteriores en texto, por ejemplo `U1 medio` |
+| `rama_m` | Largo de la rama horizontal según esta fuente |
+| `profundidad_rama_m` | Profundidad vertical a la que empieza la rama |
+| `geojson` | El recorrido completo del pozo visto desde arriba, como lista de coordenadas |
+
+## `trayectoria_punto`: un punto de una rama cada 50 metros (75.792)
+
+| Columna | Qué es |
+|---|---|
+| `pozo_id` | A qué pozo corresponde |
+| `orden` | Número del punto, contando desde el fondo del pozo |
+| `x_m`, `y_m` | Posición en metros al este y al norte de un punto fijo. Sirve para medir distancias |
+
+## `pozo_vecindad`: una fila por pozo con rama (1.615)
+
+Las distancias son vistas desde arriba, sin considerar la profundidad. Por eso cada una se calcula también solo contra ramas del mismo nivel.
+
+| Columna | Qué es |
+|---|---|
+| `distancia_vecino_m` | Distancia típica a la rama más cercana de cualquier otro pozo |
+| `distancia_vecino_mismo_nivel_m` | Lo mismo, solo contra ramas de la misma unidad. Es el espaciamiento |
+| `distancia_previo_m` | Distancia a la rama más cercana de un pozo que ya llevaba 12 meses o más produciendo (un padre) |
+| `distancia_previo_mismo_nivel_m` | Lo mismo, solo contra padres de la misma unidad |

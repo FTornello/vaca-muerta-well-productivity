@@ -1,5 +1,5 @@
 #!/bin/bash
-# Descarga los tres CSV de la Secretaría de Energía a data/raw/.
+# Descarga los cuatro CSV de la Secretaría de Energía a data/raw/.
 # La fuente se actualiza todos los meses: los números del análisis corresponden
 # a la descarga del 9 de octubre de 2026 (producción hasta agosto de 2026).
 set -euo pipefail
@@ -18,3 +18,4 @@ bajar() {
 bajar b5b58cdc-9e07-41f9-b392-fb9ec68b0725 produccion_no_convencional.csv
 bajar 2280ad92-6ed3-403e-a095-50139863ab0d fractura_adjunto_iv.csv
 bajar cb5c0f04-7835-45cd-b982-3e25ca7d7751 padron_pozos_capitulo_iv.csv
+bajar 94741ac7-4f46-4efe-b112-d3f82a4ef7c5 trayectorias_vaca_muerta.csv
