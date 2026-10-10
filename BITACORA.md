@@ -298,7 +298,38 @@ El mes de mayor producción de un pozo típico está clavado entre 5.600 y 5.800
 - Enverus, "Vaca Muerta: the global shale game changer" (no pude abrirla; cito el resumen del buscador): https://www.enverus.com/blog/vaca-muerta-the-global-shale-game-changer/
 - EconoJournal, sobre la capacidad de Oldelval: https://econojournal.com.ar/?p=131806
 
-## 16. Lo que sigue
+## 16. Segundo screening: qué más se puede preguntar
+
+*10 de octubre de 2026*
+
+Con el primer análisis cerrado busqué dos cosas: de qué se está hablando hoy en Vaca Muerta, y qué otros datos publica la Secretaría para sumar al modelo.
+
+**Los temas del momento** (prensa especializada, octubre de 2026):
+
+- **Sacar el petróleo:** el oleoducto de Oldelval está al límite y el nuevo, Vaca Muerta Oil Sur, entra en operación en 2027.
+- **La logística de la fractura:** en junio de 2026 quedaron más de mil etapas sin hacer, no por falta de equipos sino por descoordinación; se bombean más de 600 mil toneladas de arena por mes.
+- **Los costos:** YPF sostiene que un pozo cuesta 30 % más que en Estados Unidos; el punto de equilibrio que se cita ronda los 45 dólares por barril.
+- **El gas:** sobra en verano y falta mercado; los proyectos de exportación de gas licuado arrancan a fines de 2027.
+- **Inversiones nuevas:** proyectos grandes entrando al régimen de incentivos (RIGI) y áreas nuevas en desarrollo.
+
+**Datos que encontré para sumar:**
+
+| Dataset | Filas | Qué permite |
+|---|---|---|
+| Trayectorias de pozos de Vaca Muerta | 2.363 pozos | El recorrido real de cada rama y en qué nivel de la roca navega |
+| Inversiones upstream (Res. 2057) | 45.422 | Millones de dólares invertidos por mes, área y empresa |
+| Volúmenes transportados por ducto | 57.946 | Cuánto pasa por cada oleoducto y gasoducto, por mes |
+| Perforación (pozos terminados, metros) | 488.416 | Actividad de perforación por empresa y área |
+| Precios del gas natural | 1.602 | Precio por cuenca y tipo de contrato, incluida exportación |
+
+**Lo que ya se ve con los datos que tengo cargados**, sin bajar nada:
+
+- La velocidad de fractura se duplicó: de 0,9 etapas por día en 2017 a 2,2 en 2026.
+- La arena importada pasó del 15 % en 2017 a cero desde 2022.
+- La espera entre terminar la fractura y empezar a producir bajó de 38 días a 12.
+- Los pozos de gas trabajan 22 días por mes en julio y agosto, y 16 o 17 entre octubre y diciembre. En diciembre el 23 % no produce nada.
+
+## 17. Lo que sigue
 
 - Armar y publicar el tablero en Tableau Public.
-- Probar la interferencia entre pozos con el dataset de trayectorias.
+- Elegir con qué preguntas nuevas seguir.
