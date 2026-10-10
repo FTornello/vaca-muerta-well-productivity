@@ -4,7 +4,7 @@ Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abier
 
 ## La respuesta corta
 
-**Ni el diseño, ni la operadora, ni el lugar alcanzan por sí solos.** El lugar y el diseño explican cerca de un quinto de las diferencias cada uno, la operadora no se puede separar del lugar, y casi dos tercios de las diferencias entre pozos no los explica nada de lo que se publica.
+**Ni el diseño, ni la operadora, ni el lugar alcanzan por sí solos.** El lugar y el diseño explican cerca de un quinto de las diferencias cada uno, la operadora no se puede separar del lugar, y aun sumando el nivel de la roca donde navega cada pozo, cerca del 60 % de las diferencias no lo explica nada de lo que se publica.
 
 ![Los cuatro hallazgos](dashboard/boceto_resultados.png)
 
