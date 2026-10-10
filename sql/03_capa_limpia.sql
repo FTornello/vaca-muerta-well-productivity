@@ -266,7 +266,9 @@ con_motivo AS (
                CASE WHEN f.longitud_rama_m = 0 AND p.es_horizontal
                     THEN 'rama horizontal sin informar' END,
                CASE WHEN f.fecha_fin < f.fecha_inicio
-                    THEN 'fechas invertidas' END
+                    THEN 'fechas invertidas' END,
+               CASE WHEN f.fecha_inicio > (SELECT max(mes) FROM vm.produccion_mensual) + INTERVAL '2 months'
+                    THEN 'fecha futura' END
            ), '') AS motivo_sospecha
     FROM sin_duplicados f
     JOIN vm.pozo p USING (pozo_id)   -- descarta fracturas de pozos sin producción informada

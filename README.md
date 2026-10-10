@@ -40,6 +40,15 @@ Busqué qué dicen otras fuentes, puse a prueba cada explicación con los datos 
 
 El detalle y las fuentes están en las secciones 15 y 17 de la [bitácora](BITACORA.md).
 
+## Otras preguntas
+
+Con la base armada contesté dos preguntas más, sobre temas que hoy discute el sector:
+
+- **La "fábrica" de pozos creció siete veces y fractura al doble de velocidad, pero el ciclo completo no se acortó.** Se pasó de 3.244 etapas de fractura en 2017 a 23.410 en 2025, y de 0,9 a 2,2 etapas por día. Aun así, de empezar a perforar a producir siguen pasando unos 213 días: la velocidad ganada se usó en hacer pozos más grandes, y hay una espera de 70 días entre perforar y fracturar que no baja.
+- **El gas sigue a las estaciones, y cada año más.** Entre el pico de invierno y el valle de primavera, los pozos de gas bajaron 14 % en 2022 y 36 % en 2025. Mientras tanto, el gas que sale junto con el petróleo, y que no se puede cerrar, más que se duplicó en dos años y medio.
+
+Están en las secciones 18 y 19 de la [bitácora](BITACORA.md).
+
 ## Límites
 
 - **Son asociaciones, no causas.** Que los pozos más largos rindan menos por kilómetro puede deberse al diseño, a que los pozos nuevos estén en roca menos buena, o a que las empresas regulen el caudal. Estos datos no lo separan.
@@ -52,7 +61,7 @@ El detalle y las fuentes están en las secciones 15 y 17 de la [bitácora](BITAC
 Cuatro tablas de la fuente (producción, fractura, padrón de pozos y trayectorias) cargadas en PostgreSQL en dos capas:
 
 - **`raw`**: los CSV tal cual se publican.
-- **`vm`**: un modelo limpio de seis tablas (`pozo`, `produccion_mensual`, `fractura`, `area`, `empresa`, `operadora`), con ocho controles que verifican que no se perdió nada respecto de la fuente.
+- **`vm`**: un modelo limpio de seis tablas (`pozo`, `produccion_mensual`, `fractura`, `area`, `empresa`, `operadora`), con ocho controles que verifican que no se perdió nada respecto de la fuente, más tres tablas de trayectorias.
 
 Los valores imposibles no se borran: quedan marcados con su motivo, y cada consulta decide qué excluir.
 
@@ -76,12 +85,7 @@ Requiere PostgreSQL 17 y Python 3.
 ```bash
 ./scripts/descargar_datos.sh
 createdb vaca_muerta
-psql -d vaca_muerta -f sql/01_raw_tablas.sql
-psql -d vaca_muerta -f sql/02_raw_carga.sql
-psql -d vaca_muerta -f sql/03_capa_limpia.sql
-psql -d vaca_muerta -f sql/04_controles.sql
-psql -d vaca_muerta -f sql/05_vistas_analisis.sql
-psql -d vaca_muerta -f sql/07_trayectorias.sql
+./scripts/reconstruir.sh
 psql -d vaca_muerta -f sql/analisis/p1_curva_tipica.sql
 ```
 

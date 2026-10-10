@@ -382,7 +382,60 @@ Sumar el nivel de navegación me lleva de 35 % a 39 %. Sigue quedando un 60 % si
 
 **Mi lectura:** el lugar en el mapa no alcanzaba porque faltaba la tercera dimensión. Dentro de una misma área hay roca mejor y peor según la profundidad, y eso se ve en los datos. La caída del rendimiento por kilómetro sigue sin una causa única: irse a zonas nuevas explica un poco, la interferencia otro poco, y el resto queda abierto.
 
-## 18. Lo que sigue
+## 18. Pregunta 8: la fábrica de pozos
+
+*10 de octubre de 2026*
+
+En el sector se habla de Vaca Muerta como una fábrica: perforar, fracturar y conectar pozos en serie. El tema del momento es la logística, así que medí cuánto creció y cuánto se aceleró esa fábrica con la tabla de fracturas.
+
+**Creció siete veces en ocho años:**
+
+| Año | Etapas de fractura | Arena (miles de t) | Agua (millones de m³) | Arena importada |
+|---|---|---|---|---|
+| 2017 | 3.244 | 665 | 4,2 | 15 % |
+| 2021 | 8.738 | 2.025 | 12,8 | 1 % |
+| 2025 | 23.410 | 5.337 | 35,3 | 0 % |
+
+- **La arena dejó de importarse.** En 2015 venía de afuera el 76 %; desde 2022, nada.
+- **Fracturar es más del doble de rápido:** de 0,9 etapas por día en 2017 a 2,2 en 2026.
+- **Pero fracturar un pozo lleva lo mismo que antes, unos 25 días,** porque cada pozo tiene más del doble de etapas (22 en 2017, 51 en 2026). Toda la velocidad ganada se usó en hacer pozos más grandes.
+
+**El ciclo completo no se acortó.** Desde que se empieza a perforar hasta que el pozo produce pasan unos 213 días, casi lo mismo que en 2017 (212). En el medio hay una espera de unos 70 días entre terminar de perforar y empezar a fracturar que no baja desde 2018. Lo único que mejoró es el tramo final: de la fractura al pozo terminado se pasó de 21 a 12 días.
+
+Esto coincide con lo que dice el sector: el límite ya no son los equipos sino la coordinación entre etapas.
+
+**Por operadora** (pozos fracturados desde 2024): Vista (2,3 etapas por día), Pan American (2,2) e YPF (2,1) son las más rápidas. Pluspetrol es la más lenta (1,0): tarda 48 días por pozo contra 22 de Vista.
+
+**Cuidados:**
+- La fuente tiene unos tres meses de demora. Julio de 2026 figura con 174 etapas contra unas 1.600 de los meses anteriores, así que 2026 está incompleto.
+- Encontré tres fracturas con fecha de inicio posterior a la descarga. Agregué una regla de limpieza que las marca como sospechosas.
+- Las fechas de perforación parecen corresponder a la campaña del grupo de pozos y no a cada pozo, así que no informo cuánto se tarda en perforar uno.
+
+## 19. Pregunta 9: el gas y las estaciones
+
+Hasta acá todo fue petróleo. El gas es una cuarta parte de los pozos horizontales y es el otro gran tema: sobra en verano y los proyectos para exportarlo recién arrancan a fines de 2027.
+
+**La producción de los pozos de gas sigue al invierno, y cada año más:**
+
+| Año | Pico de julio y agosto (MMm³/día) | Valle de octubre y noviembre | Caída |
+|---|---|---|---|
+| 2022 | 49,1 | 42,3 | 14 % |
+| 2023 | 59,3 | 49,9 | 16 % |
+| 2024 | 73,9 | 53,3 | 28 % |
+| 2025 | 78,1 | 49,7 | 36 % |
+
+En primavera los pozos de gas trabajan 17 días por mes contra 24 en invierno, y uno de cada cinco no produce nada. No es que rindan menos: los cierran porque no hay a quién venderle.
+
+**El que absorbe el golpe es Fortín de Piedra,** el área de Tecpetrol: pasa de 20,0 a 11,6 millones de m³ por día, una caída de 42 %. Aguada Pichana Este y La Calera casi no varían (10 y 11 %).
+
+**Los pozos de gas se programan para el invierno.** El 56 % de los pozos gasíferos nuevos arranca entre febrero y junio. Los petrolíferos se reparten parejo todo el año.
+
+**Lo que no esperaba: el gas que viene con el petróleo.** Los pozos petrolíferos también producen gas, y ese gas no se puede cerrar sin cerrar el petróleo. Pasó de 7,9 millones de m³ por día en enero de 2024 a 18,1 en agosto de 2026: más del doble en dos años y medio. En cambio, el pico de los pozos de gas casi no creció entre 2025 y 2026 (79,1 contra 80,4).
+
+Es decir: cada vez hay más gas que sale sí o sí, todo el año, y que en primavera le saca lugar al de los pozos gasíferos. Eso ayuda a entender por qué la caída estacional se agranda, y por qué la exportación de gas licuado es tan esperada.
+
+**Cuidado:** que el gas asociado desplace al otro es mi lectura de los dos datos juntos; los datos de producción no muestran quién le vende a quién.
+
+## 20. Lo que sigue
 
 - Armar y publicar el tablero en Tableau Public.
-- Preguntas ya probadas por arriba: la velocidad de la "fábrica" de pozos y la estacionalidad del gas.
