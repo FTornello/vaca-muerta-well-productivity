@@ -1,0 +1,115 @@
+-- Capa raw: los CSV de la Secretaría de Energía tal cual se publican.
+-- Todas las columnas son text; los tipos se asignan en la capa limpia.
+
+CREATE SCHEMA IF NOT EXISTS raw;
+
+-- Producción mensual por pozo no convencional (Capítulo IV)
+DROP TABLE IF EXISTS raw.produccion;
+CREATE TABLE raw.produccion (
+    idempresa                    text,
+    anio                         text,
+    mes                          text,
+    idpozo                       text,
+    prod_pet                     text,
+    prod_gas                     text,
+    prod_agua                    text,
+    iny_agua                     text,
+    iny_gas                      text,
+    iny_co2                      text,
+    iny_otro                     text,
+    tef                          text,
+    vida_util                    text,
+    tipoextraccion               text,
+    tipoestado                   text,
+    tipopozo                     text,
+    observaciones                text,
+    fechaingreso                 text,
+    rectificado                  text,
+    habilitado                   text,
+    idusuario                    text,
+    empresa                      text,
+    sigla                        text,
+    formprod                     text,
+    profundidad                  text,
+    formacion                    text,
+    idareapermisoconcesion       text,
+    areapermisoconcesion         text,
+    idareayacimiento             text,
+    areayacimiento               text,
+    cuenca                       text,
+    provincia                    text,
+    coordenadax                  text,
+    coordenaday                  text,
+    tipo_de_recurso              text,
+    proyecto                     text,
+    clasificacion                text,
+    subclasificacion             text,
+    sub_tipo_recurso             text,
+    fecha_data                   text
+);
+
+-- Datos de fractura por pozo (Adjunto IV)
+DROP TABLE IF EXISTS raw.fractura;
+CREATE TABLE raw.fractura (
+    id_base_fractura_adjiv       text,
+    idpozo                       text,
+    sigla                        text,
+    cuenca                       text,
+    areapermisoconcesion         text,
+    yacimiento                   text,
+    formacion_productiva         text,
+    tipo_reservorio              text,
+    subtipo_reservorio           text,
+    longitud_rama_horizontal_m   text,
+    cantidad_fracturas           text,
+    tipo_terminacion             text,
+    arena_bombeada_nacional_tn   text,
+    arena_bombeada_importada_tn  text,
+    agua_inyectada_m3            text,
+    co2_inyectado_m3             text,
+    presion_maxima_psi           text,
+    potencia_equipos_fractura_hp text,
+    fecha_inicio_fractura        text,
+    fecha_fin_fractura           text,
+    fecha_data                   text,
+    anio_if                      text,
+    mes_if                       text,
+    anio_ff                      text,
+    mes_ff                       text,
+    anio_carga                   text,
+    mes_carga                    text,
+    empresa_informante           text,
+    mes                          text,
+    anio                         text
+);
+
+-- Padrón de pozos (Capítulo IV)
+DROP TABLE IF EXISTS raw.padron_pozos;
+CREATE TABLE raw.padron_pozos (
+    sigla                        text,
+    idpozo                       text,
+    area                         text,
+    cod_area                     text,
+    empresa                      text,
+    yacimiento                   text,
+    cod_yacimiento               text,
+    formacion                    text,
+    cuenca                       text,
+    provincia                    text,
+    cota                         text,
+    profundidad                  text,
+    clasificacion                text,
+    subclasificacion             text,
+    tipo_recurso                 text,
+    sub_tipo_recurso             text,
+    gasplus                      text,
+    tipopozo                     text,
+    tipoextraccion               text,
+    tipoestado                   text,
+    adjiv_fecha_inicio_perf      text,
+    adjiv_fecha_fin_perf         text,
+    adjiv_fecha_inicio_term      text,
+    adjiv_fecha_fin_term         text,
+    geojson                      text,
+    geom                         text
+);

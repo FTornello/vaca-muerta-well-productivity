@@ -1,0 +1,3 @@
+# Los CSV de la fuente pesan 174 MB; se bajan con scripts/descargar_datos.sh
+data/raw/
+.DS_Store
