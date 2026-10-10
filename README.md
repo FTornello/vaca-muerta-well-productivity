@@ -28,6 +28,17 @@ Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abier
 
 *Medianas de pozos horizontales petrolíferos con datos de fractura completos.*
 
+## Por qué pasa
+
+Busqué qué dicen otras fuentes y puse a prueba cuatro explicaciones con los mismos datos:
+
+- **Los números coinciden con los de la industria.** La consultora FDC estimó la producción a 365 días del pozo tipo en 17.000 m³ para 2016 y 27.800 para 2018; mis medianas dan 17.323 y 27.125.
+- **"Se perfora en zonas menos buenas" explica solo una parte.** La caída por kilómetro ocurre sobre todo dentro de las cuatro áreas históricas (de 17.211 a 13.212 m³ por km entre 2021 y 2025); en el resto casi no cambió.
+- **No es un efecto de mirar solo 12 meses.** A 24 meses la caída es la misma.
+- **La interferencia entre pozos vecinos no la pude confirmar** con la ubicación de las bocas de pozo. Hace falta el recorrido de las ramas, que la Secretaría también publica.
+
+El detalle y las fuentes están en la sección 15 de la [bitácora](BITACORA.md).
+
 ## Límites
 
 - **Son asociaciones, no causas.** Que los pozos más largos rindan menos por kilómetro puede deberse al diseño, a que los pozos nuevos estén en roca menos buena, o a que las empresas regulen el caudal. Estos datos no lo separan.
@@ -50,7 +61,7 @@ Los valores imposibles no se borran: quedan marcados con su motivo, y cada consu
 | [sql/03_capa_limpia.sql](sql/03_capa_limpia.sql) | Construye el modelo limpio y aplica las reglas de limpieza |
 | [sql/04_controles.sql](sql/04_controles.sql) | Compara la fuente contra el modelo |
 | [sql/05_vistas_analisis.sql](sql/05_vistas_analisis.sql) | Vistas de apoyo: edad del pozo y producción del primer año |
-| [sql/analisis/](sql/analisis) | Una consulta por pregunta |
+| [sql/analisis/](sql/analisis) | Una consulta por pregunta, más las pruebas de cada explicación |
 | [sql/06_exportar_dashboard.sql](sql/06_exportar_dashboard.sql) | Exporta las tablas que usa el tablero |
 | [scripts/boceto_resultados.py](scripts/boceto_resultados.py) | Genera la imagen de arriba |
 

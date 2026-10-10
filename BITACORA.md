@@ -227,7 +227,78 @@ Exporté tres tablas desde la base para alimentar el tablero: una fila por pozo,
 
 Una decisión de diseño: para mostrar que los pozos crecen pero no rinden más, puse las cuatro medidas (arena, rama, petróleo del primer año, petróleo por kilómetro) como índice con 2021 = 100. Así se comparan en una misma escala sin usar dos ejes, que confunden.
 
-## 15. Lo que sigue
+## 15. Una capa más: por qué pasa lo que encontré
+
+*10 de octubre de 2026*
+
+Los datos me dijeron qué pasó. Para el porqué busqué qué dicen consultoras, trabajos técnicos y prensa especializada, y después volví a los datos para poner a prueba cada explicación. Las consultas están en `sql/analisis/p6_por_que_cae_el_rendimiento.sql`.
+
+### Lo que confirman otras fuentes
+
+**La mejora hasta 2020 está documentada y coincide con mis números.** La consultora FDC armó un "pozo tipo" por año (nota de LM Neuquén, enero de 2021):
+
+| Año | Rama según FDC (m) | Rama en mis datos (m) | Acumulada a 365 días según FDC (m³) | Mediana en mis datos (m³) |
+|---|---|---|---|---|
+| 2016 | 1.350 | 1.411 | 17.000 | 17.323 |
+| 2018 | 2.030 | 2.000 | 27.800 | 27.125 |
+| 2019 | 2.115 | 2.250 | 37.000 | 33.270 |
+| 2020 | 2.215 | 2.207 | 41.500 | 34.457 |
+
+Que dos caminos independientes den casi lo mismo es la mejor validación que tengo del modelo. La diferencia en 2019 y 2020 puede venir de que FDC usa un pozo tipo y yo la mediana de todos los pozos. La misma fuente muestra que el costo por pozo bajó de 16,5 a 9,5 millones de dólares entre 2016 y 2020: los pozos mejoraban y además salían más baratos.
+
+**La caída por metro desde 2021 también la vio otro.** Un análisis de la consultora Enverus habla de una baja anual de 7 a 12 % en la productividad por pie de rama desde 2021, y la atribuye a que las operadoras se expanden a zonas menos productivas y a cambios en el espaciamiento entre pozos. Mi número es más moderado: 22 % en cuatro años, unos 6 % anual. No pude abrir la nota original (el sitio bloquea el acceso), así que la tomo del resumen del buscador y no sé de qué fecha es.
+
+**La interferencia entre pozos vecinos está estudiada en Vaca Muerta.** Un trabajo presentado en el congreso del IAPG en 2022 analizó 107 pozos "padres" y 80 "hijos" en Loma Campana: cuando se fractura un pozo nuevo al lado de uno que ya produce, las fracturas se comunican y el pozo nuevo puede rendir menos.
+
+**El transporte estuvo al límite.** La ampliación del oleoducto de Oldelval se inauguró en marzo de 2025 y a mediados de 2026 el sistema volvía a estar cerca de su tope.
+
+### Las explicaciones, puestas a prueba
+
+**1. "Se perfora en zonas menos buenas." Es cierto solo en parte.**
+
+Llamo áreas históricas a las cuatro que concentran la producción. En 2021 recibían el 76 % de los pozos nuevos; en 2025, el 47 %. Y fuera de ellas el rendimiento por kilómetro es menor. Hasta ahí coincide.
+
+Pero al separar los dos grupos aparece otra cosa:
+
+| Año | Áreas históricas (m³ por km) | Resto (m³ por km) |
+|---|---|---|
+| 2021 | 17.211 | 12.629 |
+| 2023 | 15.526 | 12.460 |
+| 2025 | 13.212 | 12.045 |
+
+**La caída está dentro de las áreas históricas** (23 % menos), mientras el resto casi no se movió. En 2025 las mejores zonas rinden por kilómetro apenas un 10 % más que las nuevas. Área por área: Bajada del Palo Oeste pasó de 20.379 a 14.361 y Loma Campana de 18.136 a 14.083. Entonces el problema no es solo irse a zonas peores: las zonas buenas ya no rinden como antes.
+
+**2. "Los pozos nuevos compiten con los vecinos." No lo pude confirmar.**
+
+Conté, para cada pozo, cuántos pozos al menos un año más viejos tiene a menos de 1,5 km. Si la interferencia fuera fuerte, los pozos rodeados deberían rendir menos. No pasa: los que no tienen vecinos dan 13.503 m³ por km y los que tienen 16 o más dan 15.604. Solo en Bajada del Palo Oeste se ve el efecto esperado (19.536 contra 15.041).
+
+Mi medición es tosca: uso la ubicación de la boca del pozo, no por dónde va la rama bajo tierra, y los pozos rodeados suelen estar en la mejor roca. No descarta la interferencia; dice que con este dato no se ve.
+
+**3. "Doce meses es poco para juzgar un pozo largo." No.**
+
+Repetí la cuenta a 24 meses: el rendimiento por kilómetro cae igual, de 25.094 (pozos de 2019) a 19.591 (pozos de 2024). Y los pozos largos no declinan más lento: el segundo año rinde la mitad del primero, sea cual sea el largo.
+
+**4. Un dato que no esperaba: el mejor mes de un pozo no crece.**
+
+El mes de mayor producción de un pozo típico está clavado entre 5.600 y 5.800 m³ desde 2021, aunque la rama creció 16 %. Es lo que se esperaría si las empresas limitaran el caudal inicial (por cuidado del pozo o por capacidad de las instalaciones), pero también si simplemente el tramo extra de rama aporta poco. Los datos no distinguen entre las dos.
+
+### Lo que me queda
+
+- **Confirmado:** la mejora hasta 2020 y la caída por kilómetro desde 2021 son reales y otros las vieron.
+- **Parcialmente explicado:** irse a zonas nuevas explica una parte menor. La mayor parte de la caída ocurre en las áreas históricas.
+- **Descartado:** que sea un efecto de mirar solo 12 meses.
+- **Abierto:** por qué las áreas históricas rinden menos por kilómetro. Las candidatas son la interferencia entre vecinos, que mi dato no alcanza a medir, y el límite de caudal.
+
+**Cómo seguiría:** la Secretaría publica las trayectorias de los pozos de Vaca Muerta (el recorrido de cada rama). Con eso se puede medir la distancia real entre ramas vecinas y probar bien la interferencia.
+
+### Fuentes
+
+- LM Neuquén (16 de enero de 2021), "La evolución de los pozos que hizo rentable Vaca Muerta", con datos de FDC: https://mase.lmneuquen.com/pozos/la-evolucion-los-pozos-que-hizo-rentable-vaca-muerta-n764268
+- Mamani, Rosemblat y Álvarez Castillo (2022), "Evaluación de frac-hits y su impacto en Loma Campana", IAPG: https://biblioteca.iapg.org.ar/bib/195890
+- Enverus, "Vaca Muerta: the global shale game changer" (no pude abrirla; cito el resumen del buscador): https://www.enverus.com/blog/vaca-muerta-the-global-shale-game-changer/
+- EconoJournal, sobre la capacidad de Oldelval: https://econojournal.com.ar/?p=131806
+
+## 16. Lo que sigue
 
 - Armar y publicar el tablero en Tableau Public.
-- Subir el proyecto a GitHub.
+- Probar la interferencia entre pozos con el dataset de trayectorias.
