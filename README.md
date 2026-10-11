@@ -6,6 +6,10 @@ Análisis en SQL de los 3.417 pozos de la formación Vaca Muerta con datos abier
 
 **Ni el diseño, ni la operadora, ni el lugar alcanzan por sí solos.** El lugar y el diseño explican cerca de un quinto de las diferencias cada uno, la operadora no se puede separar del lugar, y aun sumando el nivel de la roca donde navega cada pozo, cerca del 60 % de las diferencias no lo explica nada de lo que se publica.
 
+**[Ver el tablero interactivo en Tableau Public](https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams)**
+
+[![Tablero de Tableau](dashboard/tablero_tableau.jpg)](https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams)
+
 ![Los cuatro hallazgos](dashboard/boceto_resultados.png)
 
 ## Los cuatro hallazgos
