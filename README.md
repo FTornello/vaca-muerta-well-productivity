@@ -115,3 +115,7 @@ La fuente se actualiza todos los meses, así que una descarga nueva va a dar nú
 Secretaría de Energía de la Nación: [Producción de petróleo y gas por pozo (Capítulo IV)](http://datos.energia.gob.ar/dataset/produccion-de-petroleo-y-gas-por-pozo), [Datos de fractura de pozos (Adjunto IV)](http://datos.energia.gob.ar/dataset/datos-de-fractura-de-pozos-adjunto-iv) y [Trayectorias de Pozo Vaca Muerta](http://datos.energia.gob.ar/dataset/trayectoria-de-pozos). Unidades: petróleo y agua en m³, gas en miles de m³.
 
 Francisco Tornello, 2026. Trabajé con Claude Code como asistente.
+
+## Licencia
+
+El código se publica bajo licencia [MIT](LICENSE). Los datos son públicos y pertenecen a la Secretaría de Energía de la Nación.

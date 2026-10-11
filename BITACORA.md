@@ -438,4 +438,4 @@ Es decir: cada vez hay más gas que sale sí o sí, todo el año, y que en prima
 
 ## 20. Lo que sigue
 
-- Armar y publicar el tablero en Tableau Public.
+- El tablero ya está publicado en Tableau Public (2026-10-11): https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams
