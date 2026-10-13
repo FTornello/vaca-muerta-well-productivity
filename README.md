@@ -2,8 +2,8 @@
 
 Análisis en SQL de la formación Vaca Muerta, en Neuquén, con veintitrés fuentes abiertas, la mayoría de la Secretaría de Energía de Argentina. Cuarenta y dos preguntas, de 2006 a agosto de 2026, que arman una sola historia.
 
-- **[Vaca Muerta explicado](https://ftornello.github.io/vaca-muerta-well-productivity/)**: la historia en cinco ideas, con esquemas, gráficos y un simulador. Es el mejor lugar para empezar.
-- **[Tablero en Tableau Public](https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams)**: curva del pozo, diseño, operadoras, mapa y áreas.
+- **[Vaca Muerta explicado](https://ftornello.github.io/vaca-muerta-well-productivity/)**: la historia completa en cinco ideas, con esquemas, gráficos y un simulador. Es el mejor lugar para empezar.
+- **[Tablero en Tableau Public](https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams)**: una vista para explorar los pozos (curva, diseño, operadoras, mapa y áreas). Muestra el punto de partida del análisis, no la historia completa.
 - **[Bitácora](BITACORA.md)**: cómo fui razonando cada decisión, incluidas las veces que tuve que corregir algo.
 
 ## La historia en cinco actos
@@ -35,7 +35,9 @@ Análisis en SQL de la formación Vaca Muerta, en Neuquén, con veintitrés fuen
 
 Los datos de diseño de pozo son firmes de 2016 a 2024 (pregunta 51). Cada sección de la [bitácora](BITACORA.md) dice qué no se puede afirmar.
 
-## Tablero interactivo
+## Tablero para explorar
+
+El tablero cubre las primeras cinco preguntas: sirve para mirar pozo por pozo, área por área. La historia entera está en la [página explicada](https://ftornello.github.io/vaca-muerta-well-productivity/).
 
 [![Tablero de Tableau](dashboard/tablero_tableau.jpg)](https://public.tableau.com/views/vaca_muerta_tablero/QuhacequeunpozodeVacaMuertarindams)
 
