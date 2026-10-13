@@ -1,0 +1,39 @@
+archivo,organismo,dataset,descargado,tamano_mb,filas,sha256
+brent_mensual.csv,EIA (Estados Unidos),"Europe Brent Spot Price FOB, mensual",2026-10-11,0.01,473,45ba554948f5d92c334627eff80a55f98b2369c73e8dce424171d2b54294cd8d
+comercio_energia_indec.csv,"datos.gob.ar, series de tiempo (INDEC)","Exportaciones e importaciones de energía y saldo comercial, mensual",2026-10-11,0.01,200,7a65d30054c3d1905fa40745f72183e40e2e8602d5842b738b0b2a6603632656
+diccionario_clae.csv,"CEP XXI, Secretaría de Producción",Diccionario de sectores (CLAE),2026-10-10,0.23,950,cf8833573f8ba462a58cd322e4e2671ef65fe565b81cab834ffc235d40602d9e
+diccionario_departamentos.csv,"CEP XXI, Secretaría de Producción",Diccionario de departamentos,2026-10-10,0.02,510,07df1a0b9c00f3a8aea1e069dfdfea4bc236ff01e9b3da51d565bd425949a852
+eeuu_tight_oil.csv,EIA (Estados Unidos),"U.S. tight oil production by play, mensual",2026-10-11,0.14,2910,74454577c9fad6d07d419853e3b78229f14edb78663126858468e806c180de00
+empleo_neuquen_por_depto_clae2.csv,"CEP XXI, Secretaría de Producción",Puestos privados por departamento y sector (solo Neuquén),2026-10-10,2.37,91637,3676d42e73efe07822f6045a2ea67903a58fe9af446d2a7a0ef1a3c93fc728e1
+fractura_adjunto_iv.csv,Secretaría de Energía,Datos de fractura de pozos (Adjunto IV),2026-10-09,1.19,4984,8143795aa0de04f581b98baf8dccb2ee98dbf54becbf7adad7b3d0528977ddf4
+henry_hub_mensual.csv,EIA (Estados Unidos),"Henry Hub Natural Gas Spot Price, mensual",2026-10-11,0.01,357,16c99cd3cb6928bd7e27928d3bb91b3146927245c0764de135e5ace327a873a7
+inversiones_upstream_mensual.csv,Secretaría de Energía,Resolución 2057 - Inversiones realizadas mensual,2026-10-10,10.11,45486,881d5e735645b0cc3e0e279e0550d71e34f52422320a2270a812b1c92508d0ef
+metros_perforados_por_provincia.csv,Secretaría de Energía,Perforación de pozos de petróleo y gas - Metros perforados por provincia,2026-10-11,0.32,8344,249d1365e51c0416c1066ca7ac43ed9bdf719e76fd9df42c4209fd61fcffe498
+padron_pozos_capitulo_iv.csv,Secretaría de Energía,Capítulo IV - Pozos,2026-10-09,32.55,85611,44c466133c7881753d49204bebf8e0ff3d0960c92ec7d7c0c63868946fd78e87
+pais_petroleo_gas_refinacion.csv,"datos.gob.ar, series de tiempo (Secretaría de Energía)","Producción de petróleo y gas del país y crudo procesado, mensual",2026-10-11,0.01,198,8775b1815b0abaf1fad6fa6e904506d5fad7b01c216315e56f9084194d4e0852
+pozos_terminados_por_provincia.csv,Secretaría de Energía,Perforación de pozos - Pozos terminados por concepto y provincia,2026-10-11,0.34,7841,dd4a97770db901baff0440c039c623c72ab53550bbcbc0abf9dfcdf91cfb6a07
+precios_gas_natural.csv,Secretaría de Energía,Precios de Gas Natural - Res. 1/2018,2026-10-10,0.14,1602,1bd11d294573d30c8f366dfab302ee8bd4b5a19925358263b8f6f608e3576ae4
+precios_surtidor_mensual.csv,Secretaría de Energía,"Precios y volúmenes EESS - Res. 1104/04, resumido por mes, provincia y producto",2026-10-10,0.51,8923,769d01e748535f03e4b7c6669197c936b01b69749961cbd35a6827e4fe3e34ec
+produccion_no_convencional.csv,Secretaría de Energía,"Producción de petróleo y gas por pozo (Capítulo IV), no convencional",2026-10-09,140.29,426145,3407b9554163220f2ed5ac36f5870ef90c3aa92a205538d6f4e156526a548c4c
+productos_procesados.csv,Secretaría de Energía,Refinación y Comercialización - Productos procesados,2026-10-11,30.04,358128,c402a4a5905e36e38398a040faf34fc2fd98dd3989fb9fb3a89f0ac80134a408
+pronostico_gas.csv,Secretaría de Energía,Pronósticos de Producción de Petróleo y Gas - gas natural,2026-10-11,30.88,297641,d34ac34076a1d36ce415a1afe2757d247e2db3fefe164313c3378bcd8283d8b5
+pronostico_petroleo.csv,Secretaría de Energía,Pronósticos de Producción de Petróleo y Gas - petróleo,2026-10-11,13.36,117605,58bd6ad7f01ad11891e65f0dcabe0ec635ce9df17064c5f72db1a4944381c5e9
+regalias/Regalias_CRUDO.zip,Secretaría de Energía,Informe de regalías de petróleo crudo,2026-10-10,1.16,,d73f9e832acf4f2c4b5656dc3ad29b0d965a0ae2d055d4144af4886675bfc31c
+regalias/Regalias_GAS.zip,Secretaría de Energía,Informe de regalías de gas natural,2026-10-10,1.3,,24d1764dd5779f6e6887f010c86e048cd3059e4ac85735273aec3c64af0eec3e
+reservas/Reservas_HFVUY_31122016.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.09,,ea4ed43e5fabf6a3f18b182448a04e49ae508fa2a74b0e0e3b2a3f2af653b182
+reservas/Reservas_HFVUY_31122017.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.35,,9ac74694b576b2fd5c726e05c9c47033b4aed52b885e65b47674feaa30f17d0f
+reservas/reservas_al_31-12-2020.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.32,,a4358c7ff6cbce09ed188a3dfa0a0941e67690f09be49a9e47b6b38ad40382ec
+reservas/reservas_al_31-12-2021.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.34,,440d05cbe8ffce729cd95b91e875b3959ea97a7e3dc34c96c7c3d10dcac7067c
+reservas/reservas_al_31-12-2022.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.31,,8247ed505bbac56aab86e1b1137ff4297adfdebf5930fc1adc80597207513eba
+reservas/reservas_al_31-12-2023.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.3,,71fafef43c283c840f0366826206833a1e8011606b7e74ecc98ee5700f2f1c11
+reservas/reservas_al_31-12-2024.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.3,,ff3dfe8bb14012dfc6be04ac3c44438edc0f5fd8529e3beff0510cbdf51df8bf
+reservas/reservas_al_31-12-2025.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.23,,c53c46057a33218d33530d8ef6af38525ba76d7c875bb4b866fee43dc240bf2a
+reservas/reservas_cpcy_al_31_12_2019.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.33,,c872e11089ce7e63a24b03aca520538a9de8fa28155ff97f300a9e5e95be9176
+reservas/reservas_hfvuy_31122018.zip,Secretaría de Energía,Reservas de Petróleo y Gas (planilla anual),2026-10-10,0.33,,2fa86f91b8bbf38f9324e14385d141390ed1b56ff017e3afc57bafa9b125de3f
+salario_mediano_neuquen_por_depto_clae2.csv,"CEP XXI, Secretaría de Producción",Salario mediano por departamento y sector (solo Neuquén),2026-10-10,2.57,91486,04b3a4b568f4b688e605212dfd618aa5cd147cdfbfc10c883ad35a9cec0858bc
+terminales_maritimas_planilla21.csv,Secretaría de Energía,Volúmenes operados por Terminales Marítimas - Planilla 21,2026-10-10,0.59,3604,66cab62934d653d8eb93b9f440886e6422465ded18f91fe60f8efc684d35cb52
+tipo_de_cambio_bna.csv,"datos.gob.ar, series de tiempo","Tipo de cambio BNA vendedor, promedio mensual",2026-10-10,0.0,141,60eb6c63403bb4fa777389986a9dbac5c1a20c118c7af9adff06ca0ac1bea59f
+transporte_ductos_planilla20.csv,Secretaría de Energía,Volúmenes de Transporte de Hidrocarburos - Planilla 20,2026-10-10,13.99,57946,022e23f7566bbb4cbfc32afae8e299ed08cb9d97ac15e957c4d3b13539b6954f
+trayectorias_vaca_muerta.csv,Secretaría de Energía,Trayectorias de Pozo Vaca Muerta,2026-10-10,38.62,2363,83093dc4b7bad3b7ab54449bbfb074264f3b6cb17d675c9494a2336403db3034
+venteo_puntos_declarados.csv,Secretaría de Energía,Producción de hidrocarburos - Puntos de Venteo Declarados,2026-10-11,0.25,1247,c1b5e6178edef8f5370cb75bbd60751481ba5de752ba7713d9d07921bc711b52
+venteos_detectados.csv,Secretaría de Energía,Detección Satelital de Venteos - Sensores Remotos,2026-10-11,4.57,33691,46112ccd2cdeaf80df4470e709e08dbd2e85bcfe580c1e9dcfced7cc0cb3c425

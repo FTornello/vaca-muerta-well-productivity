@@ -202,6 +202,7 @@ LEFT JOIN por_punto pp USING (pozo_id)
 GROUP BY l.pozo_id, l.puntos;
 
 ALTER TABLE vm.pozo_vecindad ADD PRIMARY KEY (pozo_id);
+ALTER TABLE vm.pozo_vecindad ADD FOREIGN KEY (pozo_id) REFERENCES vm.trayectoria;
 ANALYZE vm.pozo_vecindad;
 
 

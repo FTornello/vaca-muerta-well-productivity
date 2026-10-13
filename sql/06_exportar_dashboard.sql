@@ -3,8 +3,8 @@
 --   psql -d vaca_muerta -f sql/06_exportar_dashboard.sql
 
 -- pozos.csv: una fila por pozo horizontal petrolífero con 12 meses cumplidos.
--- Es la tabla principal del tablero (preguntas 1, 2 y 3).
-\copy (SELECT a.pozo_id, a.sigla, a.area, a.operadora, a.anio_arranque, p.latitud, p.longitud, round(a.petroleo_12m_m3) AS petroleo_12m_m3, a.rama_m, a.etapas, round(a.arena_tn) AS arena_tn, a.diseno_confiable, CASE WHEN a.diseno_confiable THEN round(a.petroleo_12m_m3 / a.rama_m * 1000) END AS petroleo_por_km_m3, CASE WHEN a.diseno_confiable THEN round(a.arena_tn / a.rama_m, 2) END AS arena_tn_por_m FROM vm.pozo_analisis a JOIN vm.pozo p USING (pozo_id) ORDER BY a.pozo_id) TO 'dashboard/datos/pozos.csv' WITH (FORMAT csv, HEADER true)
+-- Es la tabla principal del tablero (preguntas 1, 2, 3 y 7).
+\copy (SELECT a.pozo_id, a.sigla, a.area, a.operadora, a.anio_arranque, p.latitud, p.longitud, round(a.petroleo_12m_m3) AS petroleo_12m_m3, a.rama_m, a.etapas, round(a.arena_tn) AS arena_tn, a.diseno_confiable, CASE WHEN a.diseno_confiable THEN round(a.petroleo_12m_m3 / a.rama_m * 1000) END AS petroleo_por_km_m3, CASE WHEN a.diseno_confiable THEN round(a.arena_tn / a.rama_m, 2) END AS arena_tn_por_m, t.nivel AS nivel_navegacion, CASE t.unidad WHEN 1 THEN 'U1 (Vaca Muerta Inferior)' WHEN 2 THEN 'U2 (Vaca Muerta Medio)' END AS unidad_navegacion FROM vm.pozo_analisis a JOIN vm.pozo p USING (pozo_id) LEFT JOIN vm.trayectoria t USING (pozo_id) ORDER BY a.pozo_id) TO 'dashboard/datos/pozos.csv' WITH (FORMAT csv, HEADER true)
 
 -- curva_por_edad.csv: petróleo por mes de vida de cada pozo, primeros 24 meses
 -- (pregunta 1, curva típica).

@@ -58,3 +58,36 @@ JOIN vm.operadora o USING (operadora_id)
 LEFT JOIN vm.fractura f ON f.pozo_id = p.pozo_id AND f.nro_fractura = 1
 WHERE p.es_horizontal
   AND p.tipo_pozo = 'Petrolífero';
+
+-- pozo_analisis_gas: lo mismo que pozo_analisis, para los pozos gasíferos.
+-- La medida de rendimiento cambia. A los pozos de gas los cierran parte del año
+-- por falta de demanda, así que el gas acumulado en 12 meses depende de cuánto
+-- los dejaron producir. Por eso se usa el caudal: gas del primer año dividido
+-- por los días que el pozo estuvo activo, en miles de m3 por día.
+CREATE OR REPLACE VIEW vm.pozo_analisis_gas AS
+SELECT p.pozo_id,
+       p.sigla,
+       ar.nombre                                    AS area,
+       o.nombre                                     AS operadora,
+       extract(year FROM p.primer_mes_produccion)::integer AS anio_arranque,
+       sum(e.gas_miles_m3)                          AS gas_12m_miles_m3,
+       sum(e.dias_activo)                           AS dias_activos_12m,
+       sum(e.gas_miles_m3) / nullif(sum(e.dias_activo), 0) AS caudal_miles_m3_dia,
+       f.longitud_rama_m                            AS rama_m,
+       f.etapas,
+       f.arena_nacional_tn + f.arena_importada_tn   AS arena_tn,
+       coalesce(f.longitud_rama_m > 0
+            AND f.arena_nacional_tn + f.arena_importada_tn > 0
+            AND NOT f.dato_sospechoso, false)       AS diseno_confiable
+FROM vm.pozo p
+JOIN vm.produccion_edad e USING (pozo_id)
+JOIN vm.area ar USING (area_id)
+JOIN vm.empresa em ON em.empresa_codigo = p.empresa_inicial
+JOIN vm.operadora o USING (operadora_id)
+LEFT JOIN vm.fractura f ON f.pozo_id = p.pozo_id AND f.nro_fractura = 1
+WHERE p.es_horizontal
+  AND p.tipo_pozo = 'Gasífero'
+  AND e.mes_de_vida <= 12
+  AND p.primer_mes_produccion <= (SELECT max(mes) FROM vm.produccion_mensual) - INTERVAL '11 months'
+GROUP BY p.pozo_id, p.sigla, ar.nombre, o.nombre, p.primer_mes_produccion,
+         f.longitud_rama_m, f.etapas, f.arena_nacional_tn, f.arena_importada_tn, f.dato_sospechoso;

@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vaca Muerta explicado</title>
+<meta name="description" content="Vaca Muerta en cinco ideas, con esquemas, gráficos y un simulador. Datos oficiales a agosto de 2026.">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una sola columna angosta de lectura; las figuras se abren al ancho completo. Mucho blanco, una línea fina por capítulo. */
+:root{
+  --bg:#f5f6f4; --surface:#fcfcfb; --ink:#111516; --ink2:#4f5654; --muted:#868d8a; --line:#dfe2df;
+  --rock:#e4e2da; --neutral:#bfc3bf; --accent:#2a78d6;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --neg:#e34948;
+  --o1:#86b6ef; --o2:#5598e7; --o3:#2a78d6; --o4:#184f95; --o5:#0d366b;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#121414; --surface:#1a1c1c; --ink:#f2f4f3; --ink2:#b9c0bd; --muted:#7f8784; --line:#2c3030;
+  --rock:#2a2c2b; --neutral:#4d5250; --accent:#3987e5;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --neg:#e66767;
+  --o1:#184f95; --o2:#256abf; --o3:#3987e5; --o4:#86b6ef; --o5:#cde2fb; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#121414; --surface:#1a1c1c; --ink:#f2f4f3; --ink2:#b9c0bd; --muted:#7f8784; --line:#2c3030;
+  --rock:#2a2c2b; --neutral:#4d5250; --accent:#3987e5;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --neg:#e66767;
+  --o1:#184f95; --o2:#256abf; --o3:#3987e5; --o4:#86b6ef; --o5:#cde2fb; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--display);font-size:17px;line-height:1.55;padding-inline:20px;padding-block:0 96px}
+.wrap{max-width:960px;margin-inline:auto;display:flex;flex-direction:column;gap:88px}
+.col{max-width:640px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(44px,9vw,92px);font-weight:800;font-stretch:80%;line-height:.95;letter-spacing:-.02em}
+h2{font-size:clamp(26px,4.2vw,38px);font-weight:700;font-stretch:88%;line-height:1.1;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:650}
+p{margin:0}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:clamp(19px,2.4vw,23px);line-height:1.4;color:var(--ink2)}
+.note{font-size:14px;color:var(--muted);line-height:1.45}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+header.hero{padding-block:72px 0;display:flex;flex-direction:column;gap:28px}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px 32px;border-top:1px solid var(--line);padding-top:24px}
+.num b{display:block;font-size:clamp(30px,4.5vw,44px);font-weight:750;font-stretch:82%;line-height:1;font-variant-numeric:tabular-nums}
+.num span{display:block;font-size:14px;color:var(--ink2);margin-top:8px;line-height:1.35}
+
+section{display:flex;flex-direction:column;gap:28px;border-top:1px solid var(--line);padding-top:28px}
+.head{display:flex;flex-direction:column;gap:14px}
+.body{display:flex;flex-direction:column;gap:14px;color:var(--ink2)}
+.body strong{color:var(--ink);font-weight:650}
+figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+figcaption{font-size:14px;color:var(--muted);line-height:1.45;max-width:640px}
+.ftitle{font-size:15px;font-weight:650;color:var(--ink)}
+.chart{width:100%;min-width:0}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.scroll{overflow-x:auto}
+.scroll svg{display:block;min-width:300px;width:100%;height:auto}
+.scroll.wide svg{min-width:620px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:36px 40px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px 28px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--ink2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+svg text{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+svg text.v{fill:var(--ink)}
+svg text.d{font-family:var(--display);font-size:13px;fill:var(--ink2)}
+svg text.dk{font-family:var(--display);font-size:13px;font-weight:650;fill:var(--ink)}
+
+/* pozo interactivo */
+.well{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.ctrl{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ctrl output{font-size:40px;font-weight:750;font-stretch:82%;line-height:1;font-variant-numeric:tabular-nums;min-width:2.4em}
+.ctrl input[type=range]{flex:1 1 220px;accent-color:var(--accent);min-width:0}
+button{font:inherit;font-size:14px;font-weight:600;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:7px 18px;cursor:pointer}
+button:hover{background:var(--ink);color:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px 24px}
+.stat{display:flex;flex-direction:column;gap:6px;min-width:0}
+.stat small{font-size:13px;color:var(--ink2)}
+.stat b{font-size:24px;font-weight:700;font-stretch:85%;font-variant-numeric:tabular-nums;line-height:1}
+.stat .bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.stat .bar i{display:block;height:100%;background:var(--accent);border-radius:2px;transition:width .35s ease}
+.stat.flat .bar i{background:var(--s2)}
+@media (prefers-reduced-motion: reduce){.stat .bar i{transition:none}}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:24px 32px}
+.tile b{display:block;font-size:30px;font-weight:750;font-stretch:82%;line-height:1;font-variant-numeric:tabular-nums}
+.tile span{display:block;font-size:14px;color:var(--ink2);margin-top:8px;line-height:1.4}
+
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.flow div{flex:1 1 130px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:12px 14px;min-width:0}
+.flow div b{display:block;font-size:15px;font-weight:650}
+.flow div span{display:block;font-size:13px;color:var(--ink2);line-height:1.35;margin-top:4px}
+.flow em{flex:0 0 auto;align-self:center;font-style:normal;color:var(--muted);font-family:var(--mono);font-size:14px}
+
+#tip{position:fixed;z-index:10;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;line-height:1.4;padding:8px 10px;border-radius:6px;max-width:240px;font-variant-numeric:tabular-nums}
+#tip b{font-weight:650}
+#tip i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+footer{border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:10px}
+
+/* página didáctica: cada idea tiene su número, una frase, un esquema y un gráfico con instrucciones de lectura */
+.nav{display:flex;flex-wrap:wrap;gap:8px}
+.nav a{font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px}
+.nav a:hover{border-color:var(--ink)}
+.idea{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.idea b{font-size:clamp(54px,9vw,88px);font-weight:800;font-stretch:78%;line-height:.8;color:var(--accent)}
+.idea span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.frase{font-size:clamp(19px,2.3vw,22px);line-height:1.4;color:var(--ink);max-width:640px}
+.leer{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:14px;line-height:1.45;color:var(--ink2);max-width:640px;border-left:2px solid var(--accent);padding-left:14px}
+.leer b{grid-column:1/-1;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.leer p{grid-column:1/-1}
+.glos{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 28px}
+.glos div{font-size:14px;line-height:1.45;color:var(--ink2);min-width:0}
+.glos div b{display:block;font-size:15px;color:var(--ink);font-weight:650}
+.sim{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px}
+.sim .ctrl output{font-size:34px;min-width:3.2em}
+.sim p{font-size:16px;color:var(--ink2);max-width:640px}
+.sim p strong{color:var(--ink)}
+.nivel{display:flex;flex-direction:column;gap:0;max-width:760px}
+.nivel div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;align-items:baseline;padding-block:12px;border-top:1px solid var(--line);font-size:15px;line-height:1.45;color:var(--ink2)}
+.nivel div i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.nivel div i::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:var(--dot)}
+.nivel strong{color:var(--ink);font-weight:650}
+@media (max-width:520px){.nivel div{grid-template-columns:minmax(0,1fr);gap:4px}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">Para entenderlo de cero · datos oficiales a agosto de 2026</p>
+  <h1>Vaca Muerta<br>explicado</h1>
+  <p class="lede col">Cinco ideas, en orden. Cada una tiene una frase que la resume, un dibujo que muestra cómo funciona y un gráfico con instrucciones para leerlo. Al final, una pregunta que todavía no tiene respuesta.</p>
+  <nav class="nav" aria-label="Las cinco ideas">
+    <a href="#base">Lo básico</a><a href="#i1">1 · Aprendieron</a><a href="#i2">2 · Se frenó</a><a href="#i3">3 · La cinta de correr</a><a href="#i4">4 · No cabe</a><a href="#i5">5 · El gas</a><a href="#cierre">La pregunta abierta</a>
+  </nav>
+</header>
+
+<section id="base">
+  <div class="head col">
+    <p class="kicker">Lo básico, antes de empezar</p>
+    <h2>Qué es un pozo de Vaca Muerta</h2>
+    <p class="frase">Vaca Muerta es una roca que está a unos tres kilómetros bajo tierra y tiene petróleo y gas adentro, pero no los deja salir. Para sacarlos hay que romperla.</p>
+  </div>
+  <div class="body col">
+    <p>Por eso el pozo baja, dobla y avanza de costado por dentro de la roca. Ese tramo horizontal es la <strong>rama</strong>. Después se la rompe por partes, inyectando agua y arena a presión: cada parte es una <strong>etapa de fractura</strong>. La arena queda adentro y mantiene abiertas las grietas.</p>
+    <p>Mové el año y mirá qué cambia y qué no.</p>
+  </div>
+  <figure class="well">
+    <div class="ctrl">
+      <output id="w-year" for="w-range">2016</output>
+      <input type="range" id="w-range" min="2016" max="2025" step="1" value="2016" aria-label="Año de arranque del pozo">
+      <button id="w-play" type="button">Reproducir</button>
+    </div>
+    <div class="scroll wide"><svg id="w-svg" viewBox="0 0 760 330" role="img" aria-label="Corte de un pozo horizontal: baja unos 3.000 metros y avanza de costado dentro de Vaca Muerta. La rama pasó de 1.411 metros en 2016 a 3.065 en 2025."></svg></div>
+    <div class="stats" id="w-stats"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>Las barras azules son lo que se le pone al pozo: metros de rama, etapas y arena. Las naranjas son lo que el pozo devuelve. Entre 2016 y 2021 suben todas. Después de 2021 las azules siguen subiendo y las naranjas no.</p></div>
+  <div class="glos">
+    <div><b>m³ y barriles</b>Dos formas de medir el petróleo. Un metro cúbico son 6,29 barriles.</div>
+    <div><b>Primer año</b>Lo que produce un pozo en sus primeros doce meses. Es la vara que uso para comparar pozos.</div>
+    <div><b>Pozo típico</b>El del medio: la mitad rinde más y la mitad menos. Así un pozo excepcional no tuerce el resultado.</div>
+    <div><b>Operadora</b>La empresa que maneja un área: YPF, Vista, Shell y otras.</div>
+  </div>
+</section>
+
+<section id="i1">
+  <div class="head col">
+    <div class="idea"><b>1</b><span>Primera idea</span></div>
+    <h2>Aprendieron a hacer el pozo</h2>
+    <p class="frase">Entre 2016 y 2021 un pozo típico pasó de dar 17.000 m³ de petróleo en su primer año a dar 38.000. Más del doble.</p>
+  </div>
+  <figure>
+    <div class="ftitle">Petróleo que da un pozo típico en su primer año, según el año en que arrancó (m³)</div>
+    <div class="chart" id="e-oil"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>Cada barra es una generación de pozos. La escalera sube hasta 2021 y ahí se aplana: las barras de color son todas casi iguales.</p></div>
+  <div class="body col">
+    <p>Todos los pozos tienen la misma vida: producen mucho al principio y caen rápido. Lo que cambió entre una generación y otra fue la altura de la curva, no la forma.</p>
+  </div>
+  <figure>
+    <div class="ftitle">La vida de un pozo: lo que produce cada mes desde que arranca (m³ de petróleo por mes)</div>
+    <div class="legend" id="l-curva"></div>
+    <div class="chart" id="e-curva"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>El eje de abajo no es el calendario, es la edad del pozo en meses. Cada línea es una generación. Todas suben, hacen pico entre el tercer y el quinto mes y bajan. Las de 2020, 2022 y 2024 casi se pisan: ahí está el estancamiento.</p></div>
+  <div class="tiles">
+    <div class="tile"><b>24 %</b><span>de todo lo que va a dar un pozo sale en el primer año</span></div>
+    <div class="tile"><b>× 4,2</b><span>lo del primer año es lo que da un pozo en 25 años: cerca de un millón de barriles</span></div>
+    <div class="tile"><b>3 años</b><span>tarda la mitad de los pozos en necesitar una bomba, porque la roca pierde presión</span></div>
+  </div>
+</section>
+
+<section id="i2">
+  <div class="head col">
+    <div class="idea"><b>2</b><span>Segunda idea</span></div>
+    <h2>En 2021 el pozo dejó de mejorar</h2>
+    <p class="frase">Desde entonces los pozos son cada vez más largos y llevan cada vez más arena, pero producen lo mismo. Cada kilómetro de rama rinde 22 % menos.</p>
+  </div>
+  <div class="grid2">
+    <figure>
+      <div class="ftitle">Lo que se le pone: metros de rama</div>
+      <div class="chart" id="e-rama"></div>
+    </figure>
+    <figure>
+      <div class="ftitle">Lo que devuelve: m³ de petróleo por cada km de rama</div>
+      <div class="chart" id="e-km"></div>
+    </figure>
+  </div>
+  <div class="leer"><b>Cómo leer esto</b><p>Mirá solo las barras de color, que son los años desde 2021. A la izquierda suben. A la derecha bajan. Es la misma historia vista de los dos lados.</p></div>
+  <div class="body col">
+    <p><strong>¿Por qué?</strong> La explicación que mejor sostienen los datos es que el centro de Vaca Muerta se está llenando de pozos. Cuando un pozo nuevo se perfora al lado de uno que ya lleva tiempo produciendo, encuentra roca que ya fue vaciada en parte.</p>
+  </div>
+  <div class="grid2">
+    <figure>
+      <div class="ftitle">Visto desde arriba: un pozo nuevo al lado de uno viejo</div>
+      <div class="scroll"><svg id="e-padre-esq" viewBox="0 0 440 264" role="img" aria-label="Tres ramas paralelas vistas desde arriba. Las dos viejas ya drenaron la roca a su alrededor. La nueva, perforada entre ellas a menos de 300 metros, se superpone con zonas ya drenadas."></svg></div>
+      <figcaption>Al pozo viejo se le dice padre y al nuevo, hijo. El hijo queda metido entre dos zonas que ya perdieron presión.</figcaption>
+    </figure>
+    <figure>
+      <div class="ftitle">Pozos que siguen fluyendo solos al tercer año (%)</div>
+      <div class="chart" id="e-padre"></div>
+      <figcaption>Un pozo fluye solo mientras la roca tiene presión. Cuanto más cerca está el padre, antes se le acaba.</figcaption>
+    </figure>
+  </div>
+  <figure>
+    <div class="ftitle">Petróleo por km de rama: las cuatro áreas más antiguas contra las áreas nuevas (m³)</div>
+    <div class="chart" id="e-fuera"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>La línea azul son las cuatro áreas donde empezó todo. La naranja, el resto. En 2017 estaban lejos una de otra; en 2025 casi se tocan. Las viejas bajan y las nuevas suben: el problema no es toda la roca, es el centro.</p></div>
+  <div class="tiles">
+    <div class="tile"><b>− 15 %</b><span>rinde un pozo con un padre a menos de 300 metros</span></div>
+    <div class="tile"><b>18 → 40 %</b><span>de los pozos nuevos de las áreas antiguas nace junto a un padre, entre 2019 y 2023</span></div>
+    <div class="tile"><b>61 %</b><span>de las diferencias entre un pozo y otro no se puede explicar con datos públicos</span></div>
+  </div>
+</section>
+
+<section id="i3">
+  <div class="head col">
+    <div class="idea"><b>3</b><span>Tercera idea</span></div>
+    <h2>Ahora crece solo porque se perfora más</h2>
+    <p class="frase">Es una cinta de correr. Como cada pozo cae rápido, hay que perforar muchísimo solo para quedarse en el mismo lugar, y más todavía para avanzar.</p>
+  </div>
+  <figure>
+    <div class="ftitle">Lo que pasó en 2025, paso a paso (miles de barriles de petróleo por día)</div>
+    <div class="chart" id="e-cascada"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>De izquierda a derecha. Se arranca el año con 447. Los pozos que ya existían pierden 166 en doce meses, sin que nadie haga nada. Los 470 pozos nuevos suman 309. Más de la mitad de ese esfuerzo se fue en tapar el agujero; lo que quedó de ganancia son 143.</p></div>
+  <figure>
+    <div class="ftitle">Y si mañana no se perforara un solo pozo más (miles de barriles por día)</div>
+    <div class="chart" id="e-sin"></div>
+    <figcaption>En un año se pierde el 40 %. Probé esta cuenta con los últimos cinco años reales y erró menos de 10 %.</figcaption>
+  </figure>
+  <div class="sim">
+    <div class="ftitle">Probalo: ¿cuántos pozos por año hacen falta?</div>
+    <div class="ctrl">
+      <output id="s-n" for="s-range">470</output>
+      <input type="range" id="s-range" min="0" max="700" step="10" value="470" aria-label="Pozos nuevos por año">
+      <span class="note">pozos nuevos por año</span>
+    </div>
+    <div class="chart" id="e-sim"></div>
+    <p id="s-txt"></p>
+    <p class="note">Supone que los pozos nuevos rinden como los de 2025 y que hay oleoductos para sacar ese petróleo. En 2025 se conectaron 470 pozos; en 2026 se viene perforando a un ritmo de unos 555 por año.</p>
+  </div>
+  <div class="body col">
+    <p><strong>El crecimiento cambió de motor.</strong> Lo que da una generación de pozos es la cantidad de pozos, por el largo de la rama, por lo que rinde cada kilómetro. Eso permite ver cuál de las tres cosas empujó.</p>
+  </div>
+  <div class="grid2">
+    <figure>
+      <div class="ftitle">De 2016 a 2021 (% del crecimiento)</div>
+      <div class="chart" id="e-desc1"></div>
+    </figure>
+    <figure>
+      <div class="ftitle">De 2021 a 2024 (% del crecimiento)</div>
+      <div class="chart" id="e-desc2"></div>
+    </figure>
+  </div>
+  <div class="leer"><b>Cómo leer esto</b><p>A la izquierda, las tres barras apuntan para arriba: se crecía por todo. A la derecha, la tercera apunta para abajo: el rendimiento resta. Por eso "más pozos" pasa de 100 %: tiene que compensar lo que la otra quita.</p></div>
+  <div class="tiles">
+    <div class="tile"><b>52 %</b><span>del petróleo de hoy sale de pozos que tienen menos de un año</span></div>
+    <div class="tile"><b>+ 50 %</b><span>subió el costo de cada metro perforado entre 2021 y 2024</span></div>
+    <div class="tile"><b>27 → 44 USD</b><span>el precio del barril que hace falta para recuperar un pozo en dos años</span></div>
+  </div>
+</section>
+
+<section id="i4">
+  <div class="head col">
+    <div class="idea"><b>4</b><span>Cuarta idea</span></div>
+    <h2>Ese petróleo no cabe en el país</h2>
+    <p class="frase">Las refinerías argentinas procesan lo mismo que hace quince años. Todo lo que Vaca Muerta agrega por encima de eso tiene que salir al exterior.</p>
+  </div>
+  <figure>
+    <div class="ftitle">Lo que produce el país, lo que refina y lo que da Vaca Muerta (miles de barriles por día)</div>
+    <div class="chart" id="e-pais"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>La línea naranja, las refinerías, es casi plana: es el techo de lo que el país puede usar. Cuando la línea gris del país se despega hacia arriba, el espacio entre las dos es lo que hay que exportar. Y la azul muestra de dónde viene ese petróleo extra.</p></div>
+  <div class="grid2">
+    <figure>
+      <div class="ftitle">A dónde va cada barril, enero a julio de 2026</div>
+      <div class="scroll"><svg id="d-flujo" viewBox="0 0 440 260" role="img" aria-label="De 615 mil barriles por día, 249 salen por barco, 75 por oleoducto a Chile y unos 291 quedan en el país."></svg></div>
+      <figcaption>Miles de barriles por día. Más de la mitad ya se exporta.</figcaption>
+    </figure>
+    <figure>
+      <div class="ftitle">Lo que el país gana o pierde comerciando energía (millones de USD por año)</div>
+      <div class="chart" id="e-bal"></div>
+      <figcaption>Rojo: se importó más de lo que se exportó. Azul: al revés. 2026 llega hasta agosto.</figcaption>
+    </figure>
+  </div>
+  <div class="tiles">
+    <div class="tile"><b>63 %</b><span>del petróleo argentino ya sale de Vaca Muerta</span></div>
+    <div class="tile"><b>− 6.900 → + 7.800</b><span>millones de dólares: el saldo energético del país en 2013 y en 2025</span></div>
+    <div class="tile"><b>2022 y 2023</b><span>los años en que el oleoducto se llenó y frenó a los pozos</span></div>
+  </div>
+</section>
+
+<section id="i5">
+  <div class="head col">
+    <div class="idea"><b>5</b><span>Quinta idea</span></div>
+    <h2>El gas quedó atrapado</h2>
+    <p class="frase">Con el gas pasa lo contrario. Hay roca y hay reservas, pero no hay a quién venderle más. El petróleo se sube a un barco; el gas necesita un caño y un comprador en la otra punta.</p>
+  </div>
+  <figure>
+    <div class="ftitle">Gas que produce Vaca Muerta (millones de m³ por día)</div>
+    <div class="chart" id="e-gas"></div>
+  </figure>
+  <div class="leer"><b>Cómo leer esto</b><p>Los dientes de sierra son las estaciones. Cada pico es un invierno, cuando se prenden las estufas. Cada valle es una primavera, cuando sobra gas y se cierran pozos. Los valles son cada año más profundos.</p></div>
+  <div class="grid2">
+    <figure>
+      <div class="ftitle">El precio del gas acá y en Estados Unidos (USD por millón de BTU)</div>
+      <div class="chart" id="e-hh"></div>
+      <figcaption>Afuera el precio sube y baja. Acá está quieto en 2,9: no hay un mercado que mande la señal de producir más.</figcaption>
+    </figure>
+    <figure>
+      <div class="ftitle">Lo que las empresas esperan crecer de 2026 a 2029 (%)</div>
+      <div class="chart" id="e-pron"></div>
+      <figcaption>No lo digo yo: es lo que cada empresa le declara al Estado todos los años.</figcaption>
+    </figure>
+  </div>
+  <div class="tiles">
+    <div class="tile"><b>10 → 20 %</b><span>de los pozos de gas parados, de julio a octubre</span></div>
+    <div class="tile"><b>+ 22 %</b><span>más gas trae cada barril de petróleo que en 2023. Ese gas no se puede cerrar</span></div>
+    <div class="tile"><b>53 %</b><span>del gas del país es de Vaca Muerta, pero el total casi no creció: reemplazó al gas viejo</span></div>
+  </div>
+</section>
+
+<section id="cierre">
+  <div class="head col">
+    <p class="kicker">La pregunta abierta</p>
+    <h2>¿Se puede sostener?</h2>
+    <p class="frase">Hoy se perfora al ritmo exacto que hace falta para llegar a un millón de barriles por día en 2030. Pero hay que mantenerlo todos los años, con un pozo que ya no mejora y que cuesta más.</p>
+  </div>
+  <div class="body col">
+    <p>A los pozos que ya existen les queda por dar la mitad de las reservas que las empresas tienen declaradas. La otra mitad son unos 1.300 pozos todavía sin perforar: menos de tres años al ritmo actual. Después habrá que seguir encontrando lugares buenos, cada vez más lejos del centro.</p>
+  </div>
+  <div class="head col">
+    <p class="kicker">Qué tan seguro es cada cosa</p>
+  </div>
+  <div class="nivel">
+    <div style="--dot:var(--s3)"><i>Firme</i><span><strong>El pozo típico se estancó en 2021.</strong> Sale de 1.688 pozos, no cambia sacando los datos raros y coincide con lo que publicaron dos consultoras.</span></div>
+    <div style="--dot:var(--s3)"><i>Firme</i><span><strong>Los pozos existentes pierden 37 % por año.</strong> Dos métodos distintos dan lo mismo, y la proyección acertó contra cinco años reales.</span></div>
+    <div style="--dot:var(--s3)"><i>Firme</i><span><strong>Se exporta lo que no se puede refinar.</strong> Lo que sobra de refinar (250 mil barriles por día) coincide con lo que se embarca (233 mil), y son dos fuentes distintas.</span></div>
+    <div style="--dot:var(--s3)"><i>Firme</i><span><strong>El gas no tiene mercado.</strong> Lo dicen el volumen, el precio, los pozos parados y los pronósticos de las propias empresas.</span></div>
+    <div style="--dot:var(--s4)"><i>Con supuestos</i><span><strong>Los pozos que pide cada meta.</strong> Depende de que los pozos nuevos rindan como los de 2025 y de que haya cómo sacar el petróleo.</span></div>
+    <div style="--dot:var(--s2)"><i>Interpretación</i><span><strong>El centro se está apretando.</strong> Cuatro señales independientes apuntan ahí y hay estudios técnicos que explican el mecanismo, pero los datos muestran el resultado, no la causa.</span></div>
+  </div>
+  <div class="body col">
+    <p>Todo esto sale de un análisis en SQL sobre 23 fuentes oficiales. Las consultas, los datos y los límites de cada resultado están en el <a href="https://github.com/FTornello/vaca-muerta-well-productivity">repositorio en GitHub</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="note">Fuente: Secretaría de Energía de la Nación (datos.energia.gob.ar), INDEC y EIA (Estados Unidos). Datos a agosto de 2026. Análisis de Francisco Tornello, con Claude Code como asistente.</p>
+</footer>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+/* ---------- datos ---------- */
+const MENS=[["2014-01",11.6,.8],["2014-02",12.3,.8],["2014-03",12,.8],["2014-04",12.8,1],["2014-05",13.9,1.2],["2014-06",15.9,1.3],["2014-07",16.5,1.4],["2014-08",19.3,1.6],["2014-09",21,1.8],["2014-10",20.7,2],["2014-11",21.2,2.1],["2014-12",21,2.4],["2015-01",20.5,2.7],["2015-02",20.9,2.7],["2015-03",21.1,2.6],["2015-04",21.4,2.7],["2015-05",21.8,2.7],["2015-06",21.2,3],["2015-07",21.6,3.6],["2015-08",22,3.6],["2015-09",23.2,3.5],["2015-10",24.8,3.7],["2015-11",22.6,3.4],["2015-12",24.5,3.4],["2016-01",24.6,3.5],["2016-02",23.5,3.5],["2016-03",24.5,4.2],["2016-04",26.5,3.8],["2016-05",26.7,4.3],["2016-06",28.8,4.2],["2016-07",30.3,4.4],["2016-08",31.9,4.6],["2016-09",32.9,4.5],["2016-10",33.7,5],["2016-11",33.4,4.9],["2016-12",36,4.9],["2017-01",36.2,5.1],["2017-02",34.5,5.1],["2017-03",34.6,5.6],["2017-04",34.8,5.7],["2017-05",36.7,5.9],["2017-06",37.4,6],["2017-07",38.1,6.1],["2017-08",37.3,6.1],["2017-09",38.1,6.3],["2017-10",39.1,7.3],["2017-11",40.6,7.5],["2017-12",40.1,8.3],["2018-01",41.5,9.1],["2018-02",46.2,11.5],["2018-03",48.4,12.9],["2018-04",49.7,13.8],["2018-05",51.2,15.5],["2018-06",52.5,17.5],["2018-07",53.7,17.9],["2018-08",60.9,20.4],["2018-09",65.1,22.5],["2018-10",66.8,24.9],["2018-11",71.5,26.7],["2018-12",74.1,27.6],["2019-01",77.6,28.7],["2019-02",77,31.1],["2019-03",72.5,29.1],["2019-04",81.8,28.7],["2019-05",84.1,30],["2019-06",81.7,32.7],["2019-07",86.6,34.8],["2019-08",100.6,35.6],["2019-09",101.6,34],["2019-10",101.7,35.2],["2019-11",104.3,28.4],["2019-12",110.8,29.6],["2020-01",112,32.4],["2020-02",118.3,32.4],["2020-03",122.8,30.8],["2020-04",91.6,27.4],["2020-05",93.2,29.3],["2020-06",116.6,31.5],["2020-07",116.8,32.2],["2020-08",117.4,32.2],["2020-09",111.1,29.7],["2020-10",115.4,29.9],["2020-11",118.5,26],["2020-12",123.9,25.2],["2021-01",133.1,26.8],["2021-02",137.5,26.5],["2021-03",144.3,27.7],["2021-04",147.3,26.2],["2021-05",147.6,32.2],["2021-06",151.9,38.4],["2021-07",161.3,41.4],["2021-08",157.9,44.2],["2021-09",174,44.1],["2021-10",190.2,42.2],["2021-11",198,43.7],["2021-12",206.5,43.5],["2022-01",217.5,45.4],["2022-02",216.4,43],["2022-03",221.7,46],["2022-04",228.8,44.8],["2022-05",234.5,51.9],["2022-06",232.6,53.4],["2022-07",240.6,55.1],["2022-08",244.6,56.2],["2022-09",258.3,54.5],["2022-10",269.3,51.3],["2022-11",270.3,46.5],["2022-12",276.6,49.8],["2023-01",284.6,50.7],["2023-02",292.9,52.3],["2023-03",300.4,52.6],["2023-04",295.4,52],["2023-05",296,57.9],["2023-06",290.4,62.3],["2023-07",290.7,64.9],["2023-08",296.9,68.5],["2023-09",304.8,67.4],["2023-10",323.2,57.1],["2023-11",339.3,58.9],["2023-12",351.7,51.2],["2024-01",345.3,56.3],["2024-02",352.6,61.5],["2024-03",360.3,62.7],["2024-04",363,64.3],["2024-05",366.1,77.6],["2024-06",373.1,78],["2024-07",385.8,82.8],["2024-08",402.3,83.8],["2024-09",385.3,78.1],["2024-10",421.4,64.7],["2024-11",437.2,62],["2024-12",447.4,61.4],["2025-01",442.3,68.6],["2025-02",443.1,74.2],["2025-03",446.2,66.6],["2025-04",441.5,69.1],["2025-05",447.8,79.6],["2025-06",476.1,88.6],["2025-07",508.6,91.1],["2025-08",526.6,90.1],["2025-09",546.8,75.3],["2025-10",568.3,64.8],["2025-11",576.7,64.1],["2025-12",590.4,72.7],["2026-01",599.4,72.8],["2026-02",590.8,78.2],["2026-03",597.6,82.6],["2026-04",616,82.8],["2026-05",622.6,95.4],["2026-06",633.5,97.7],["2026-07",643.1,96.5],["2026-08",669.8,95.4]];
+const CURVA={"2016":[360,1715,2196,2098,1908,1705,1553,1411,1262,1251,1158,1161,1081,1048,992,947,893,853,790,759,756,717,678,624],"2018":[694,2454,3180,3309,3141,2808,2356,2151,1967,1745,1610,1574,1426,1295,1199,1096,1035,957,918,895,960,932,969,967],"2020":[1061,3587,3835,3826,4293,3990,3439,2942,2810,2786,2579,2249,2065,1931,1806,1833,1799,1690,1582,1600,1516,1475,1490,1433],"2022":[974,3786,4686,4993,4650,4199,3658,3283,2903,2713,2566,2331,2241,2192,2042,1999,1797,1764,1607,1643,1519,1416,1404,1361],"2024":[949,3470,4617,4807,4308,3698,3168,2814,2567,2270,2181,2058,1994,1952,1894,1752,1654,1629,1606,1578,1540,1492,1386,1309]};
+const DIS=[{a:2016,rama:1411,et:18,arena:4252,oil:17455,km:13306},{a:2017,rama:1476,et:19,arena:3901,oil:17738,km:11841},{a:2018,rama:2000,et:26,arena:5932,oil:27067,km:13158},{a:2019,rama:2250,et:33,arena:7931,oil:33511,km:16846},{a:2020,rama:2207,et:34,arena:7797,oil:34496,km:16604},{a:2021,rama:2519,et:36,arena:8218,oil:38573,km:16307},{a:2022,rama:2576,et:40,arena:9285,oil:39545,km:15374},{a:2023,rama:2684,et:44,arena:10226,oil:37861,km:14797},{a:2024,rama:2888,et:46,arena:10919,oil:35832,km:12847},{a:2025,rama:3065,et:50,arena:11761,oil:38533,km:12695}];
+/* ---------- utilidades ---------- */
+const $=id=>document.getElementById(id);
+const f=(n,d=0)=>n.toLocaleString('es-AR',{maximumFractionDigits:d,minimumFractionDigits:d});
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const mesTxt=s=>MES[+s.slice(5)-1]+' '+s.slice(0,4);
+const tip=$('tip');
+function showTip(e,html){tip.innerHTML=html;tip.hidden=false;
+  const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;
+  if(x+r.width>innerWidth-8)x=e.clientX-r.width-14; if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;
+  tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px';}
+function hideTip(){tip.hidden=true}
+const charts=[];
+function reg(id,fn){const el=$(id);const draw=()=>fn(el,Math.max(260,Math.floor(el.clientWidth)));charts.push(draw);draw();}
+let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(()=>charts.forEach(d=>d()),120)}).observe(document.body);
+function ticks(max,step){const a=[];for(let v=0;v<=max+1e-9;v+=step)a.push(+v.toFixed(6));return a}
+
+/* líneas con mira y tooltip */
+function line(el,W,o){
+  const H=o.h||Math.round(Math.min(340,Math.max(220,W*.42))),m={t:14,r:o.end?88:12,b:26,l:o.l||42};
+  const n=o.x.length,pw=W-m.l-m.r,ph=H-m.t-m.b,X=i=>m.l+i/(n-1)*pw,Y=v=>m.t+ph-v/o.yMax*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label}">`;
+  for(const v of ticks(o.yMax,o.yStep))s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${m.l-8}" y="${Y(v)+4}" text-anchor="end">${o.yFmt?o.yFmt(v):f(v)}</text>`;
+  for(const [i,t] of o.xTicks)s+=`<text x="${X(i)}" y="${H-6}" text-anchor="middle">${t}</text>`;
+  if(o.band){let d='';o.band.hi.forEach((v,i)=>d+=(i?'L':'M')+X(i)+','+Y(v));for(let i=n-1;i>=0;i--)d+='L'+X(i)+','+Y(o.band.lo[i]);s+=`<path d="${d}Z" fill="var(--s1)" opacity=".16"/>`}
+  if(o.vline){s+=`<line x1="${X(o.vline.i)}" x2="${X(o.vline.i)}" y1="${m.t}" y2="${m.t+ph}" stroke="var(--muted)" stroke-dasharray="3 4"/><text x="${X(o.vline.i)+6}" y="${m.t+10}">${o.vline.t}</text>`}
+  for(const se of o.series){let d='',pen=false,a='';
+    se.vals.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?'L':'M')+X(i).toFixed(1)+','+Y(v).toFixed(1);pen=true});
+    if(se.area){const i0=se.vals.findIndex(v=>v!=null);a=d+`L${X(n-1)},${Y(0)}L${X(i0)},${Y(0)}Z`;s+=`<path d="${a}" fill="${se.color}" opacity=".12"/>`}
+    s+=`<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    if(o.end){let i=n-1;while(se.vals[i]==null)i--;s+=`<circle cx="${X(i)}" cy="${Y(se.vals[i])}" r="4" fill="${se.color}" stroke="var(--bg)" stroke-width="2"/><text class="dk" x="${X(i)+9}" y="${Y(se.vals[i])+(se.dy||4)}">${se.short||se.name}</text>`}}
+  for(const p of (o.marks||[]))s+=`<circle cx="${X(p.i)}" cy="${Y(p.v)}" r="4" fill="var(--bg)" stroke="${o.markColor||'var(--s1)'}" stroke-width="2"/><text class="d" x="${X(p.i)+(p.dx??8)}" y="${Y(p.v)+(p.dy??16)}" text-anchor="${p.anchor||'start'}">${p.t}</text>`;
+  s+=`<line class="cur" y1="${m.t}" y2="${m.t+ph}" stroke="var(--ink2)" stroke-width="1" visibility="hidden"/><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent"/></svg>`;
+  el.innerHTML=s;const svg=el.firstChild,cur=svg.querySelector('.cur');
+  svg.onpointermove=e=>{const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W;
+    const i=Math.max(0,Math.min(n-1,Math.round((x-m.l)/pw*(n-1))));cur.setAttribute('x1',X(i));cur.setAttribute('x2',X(i));cur.setAttribute('visibility','visible');
+    let h=`<b>${o.xTip?o.xTip(o.x[i]):o.x[i]}</b>`;for(const se of o.series)if(se.vals[i]!=null)h+=`<br><i style="background:${se.color}"></i>${se.name}: ${o.vFmt?o.vFmt(se.vals[i]):f(se.vals[i])}`;
+    if(o.extraTip)h+=o.extraTip(i);showTip(e,h)};
+  svg.onpointerleave=()=>{cur.setAttribute('visibility','hidden');hideTip()};
+}
+/* barras verticales, simples o apiladas */
+function bars(el,W,o){
+  const H=o.h||220,m={t:22,r:4,b:24,l:o.l??4},n=o.cats.length,pw=W-m.l-m.r,ph=H-m.t-m.b,bw=Math.min(54,pw/n-(o.gap??8)),step=pw/n;
+  const tot=o.cats.map((_,i)=>o.series.reduce((a,se)=>a+se.vals[i],0)),yMax=o.yMax||Math.max(...tot)*1.02,Y=v=>m.t+ph-v/yMax*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label}"><line x1="${m.l}" x2="${W-m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)"/>`;
+  o.cats.forEach((c,i)=>{const x=m.l+step*i+(step-bw)/2;let acc=0;
+    o.series.forEach((se,k)=>{const v=se.vals[i];if(v<=0)return;const y1=Y(acc+v),hh=Y(acc)-y1-(k<o.series.length-1?2:0),top=k==o.series.length-1;acc+=v;
+      const col=(o.colorAt&&o.colorAt(i))||se.color,r=top?Math.min(4,bw/2,Math.max(0,hh)):0;
+      const d=`M${x},${y1+hh}V${y1+r}Q${x},${y1} ${x+r},${y1}H${x+bw-r}Q${x+bw},${y1} ${x+bw},${y1+r}V${y1+hh}Z`;
+      s+=`<path d="${d}" fill="${col}" data-i="${i}" data-k="${k}"/>`;
+      if(o.inner&&hh>16)s+=`<text x="${x+bw/2}" y="${y1+hh/2+4}" text-anchor="middle" style="fill:${se.tc||'#fff'};pointer-events:none">${o.fmt(v)}</text>`});
+    if(!o.labelAt||o.labelAt(i))s+=`<text class="v" x="${x+bw/2}" y="${Y(tot[i])-6}" text-anchor="middle">${o.fmt(o.tots?o.tots[i]:tot[i])}</text>`;
+    if(!o.catAt||o.catAt(i))s+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle">${c}</text>`});
+  el.innerHTML=s+'</svg>';
+  el.querySelectorAll('path').forEach(p=>{p.onpointermove=e=>{const i=+p.dataset.i;let h=`<b>${o.catTip?o.catTip(o.cats[i]):o.cats[i]}</b>`;
+    o.series.forEach(se=>h+=`<br>${o.series.length>1?`<i style="background:${se.color}"></i>${se.name}: `:''}${o.fmt(se.vals[i])}${o.unit||''}`);
+    if(o.series.length>1&&o.showTot!==false)h+=`<br>Total: ${o.fmt(o.tots?o.tots[i]:tot[i])}${o.unit||''}`;showTip(e,h)};p.onpointerleave=hideTip});
+}
+/* barras con valores positivos y negativos */
+function divbars(el,W,o){
+  const H=o.h||260,m={t:20,b:40,l:4,r:4},n=o.cats.length,pw=W-m.l-m.r,ph=H-m.t-m.b,step=pw/n,bw=Math.min(54,step-(W<520?3:8));
+  const max=Math.max(...o.vals),min=Math.min(0,...o.vals),Y=v=>m.t+ph*(max-v)/(max-min);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label}">`;
+  o.vals.forEach((v,i)=>{const x=m.l+step*i+(step-bw)/2,y=Math.min(Y(v),Y(0)),hh=Math.max(1,Math.abs(Y(v)-Y(0))),r=Math.min(4,bw/2,hh),col=o.colorAt(i,v);
+    const d=v>=0?`M${x},${y+hh}V${y+r}Q${x},${y} ${x+r},${y}H${x+bw-r}Q${x+bw},${y} ${x+bw},${y+r}V${y+hh}Z`:`M${x},${y}V${y+hh-r}Q${x},${y+hh} ${x+r},${y+hh}H${x+bw-r}Q${x+bw},${y+hh} ${x+bw},${y+hh-r}V${y}Z`;
+    s+=`<path d="${d}" fill="${col}" data-i="${i}"/>`;
+    if(o.labelAt(i))s+=`<text class="v" x="${x+bw/2}" y="${v>=0?y-6:y+hh+14}" text-anchor="middle">${o.fmt(v)}</text>`;
+    if(!o.catAt||o.catAt(i))s+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle">${o.cats[i]}</text>`});
+  s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink2)"/>`;
+  el.innerHTML=s+'</svg>';
+  el.querySelectorAll('path').forEach(p=>{p.onpointermove=e=>{const i=+p.dataset.i;showTip(e,`<b>${o.catTip?o.catTip(o.cats[i]):o.cats[i]}</b><br>${o.fmt(o.vals[i])}${o.unit||''}`)};p.onpointerleave=hideTip});
+}
+/* barras horizontales */
+function hbars(el,W,o){
+  const lw=Math.min(o.lw||150,W*.4),rowH=o.rowH||30,groups=o.rows.length,k=o.rows[0].vals.length,m={t:4,r:o.r||60},H=m.t+groups*(rowH*k+(k>1?14:8));
+  const max=o.max||Math.max(...o.rows.flatMap(r=>r.vals)),pw=W-lw-m.r;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.label}">`,y=m.t;
+  o.rows.forEach((r,gi)=>{s+=`<text class="d" x="${lw-10}" y="${y+rowH*k/2+4}" text-anchor="end">${r.l}</text>`;
+    r.vals.forEach((v,j)=>{const w=v/max*pw,hh=rowH-8,rr=Math.min(4,w/2);
+      s+=`<path d="M${lw},${y+4}H${lw+w-rr}Q${lw+w},${y+4} ${lw+w},${y+4+rr}V${y+4+hh-rr}Q${lw+w},${y+4+hh} ${lw+w-rr},${y+4+hh}H${lw}Z" fill="${o.colors[j]}" data-g="${gi}" data-j="${j}"/><text class="v" x="${lw+w+8}" y="${y+4+hh/2+4}">${o.fmt(v)}${j==0&&r.note?'  '+r.note:''}</text>`;y+=rowH});
+    y+=k>1?14:8});
+  el.innerHTML=s+'</svg>';
+  el.querySelectorAll('path').forEach(p=>{p.onpointermove=e=>{const r=o.rows[+p.dataset.g],j=+p.dataset.j;showTip(e,`<b>${r.l}</b><br>${o.names?o.names[j]+': ':''}${o.fmt(r.vals[j])}${o.unit||''}`)};p.onpointerleave=hideTip});
+}
+
+
+/* ---------- gráficos ---------- */
+const since21=i=>DIS[i].a>=2021;
+const porAnio=(id,key,label,col)=>reg(id,(el,W)=>bars(el,W,{label,h:230,gap:W<520?4:8,cats:DIS.map(d=>W<520?"'"+String(d.a).slice(2):String(d.a)),catAt:i=>W>=520||i%3==0,catTip:c=>c.length==3?'20'+c.slice(1):c,
+  series:[{name:key,vals:DIS.map(d=>d[key]),color:col}],fmt:v=>f(v),labelAt:i=>W>=520||i==0||i==5||i==9,colorAt:i=>since21(i)?col:'var(--neutral)'}));
+porAnio('e-oil','oil','El petróleo del primer año de un pozo típico subió de 17.455 m³ en 2016 a 38.573 en 2021 y quedó cerca de ese nivel hasta 2025.','var(--s1)');
+porAnio('e-rama','rama','La rama del pozo típico pasó de 1.411 metros en 2016 a 3.065 en 2025.','var(--s1)');
+porAnio('e-km','km','El petróleo por kilómetro de rama bajó de 16.307 m³ en 2021 a 12.695 en 2025.','var(--s2)');
+
+const anios=['2016','2018','2020','2022','2024'],oc=['var(--o1)','var(--o2)','var(--o3)','var(--o4)','var(--o5)'];
+$('l-curva').innerHTML=anios.map((a,i)=>`<span><i style="background:${oc[i]}"></i>arrancó en ${a}</span>`).join('');
+reg('e-curva',(el,W)=>line(el,W,{label:'Curva de producción mensual de un pozo típico según su año de arranque: sube rápido, hace pico entre el tercer y el quinto mes y cae.',x:Array.from({length:24},(_,i)=>i+1),
+  xTip:m=>'Mes '+m+' de vida',xTicks:[0,5,11,17,23].map(i=>[i,i==0?'mes 1':String(i+1)]),yMax:5000,yStep:1000,series:anios.map((a,i)=>({name:'Arrancó en '+a,color:oc[i],vals:CURVA[a]})),vFmt:v=>f(v)+' m³',
+  marks:[{i:3,v:4993,t:'el pico',dx:10,dy:-4}]}));
+
+reg('e-padre',(el,W)=>bars(el,W,{label:'Al tercer año fluye solo el 66 % de los pozos con un padre a menos de 300 metros, el 71 % con el padre entre 300 y 500 y el 79 % con el padre lejos o sin padre.',h:230,gap:10,yMax:100,cats:['< 300 m','300 a 500 m','lejos o sin padre'],
+  series:[{name:'Fluye solo',vals:[66,71,79],color:'var(--s1)'}],fmt:v=>f(v)+' %',colorAt:i=>i==0?'var(--s2)':'var(--s1)'}));
+
+const FU=[[2017,13376,8739],[2018,14713,8365],[2019,19133,11446],[2020,17467,14039],[2021,17211,12629],[2022,16053,13966],[2023,15526,12460],[2024,13536,11346],[2025,13212,12045]];
+reg('e-fuera',(el,W)=>line(el,W,{label:'El rendimiento por kilómetro de las áreas antiguas bajó de 19.133 m³ en 2019 a 13.212 en 2025; el de las áreas nuevas subió de 8.739 en 2017 a 12.045.',x:FU.map(d=>d[0]),xTip:a=>'Arrancaron en '+a,h:280,
+  xTicks:FU.map((d,i)=>[i,String(d[0])]).filter(([i])=>i%2==0),yMax:20000,yStep:5000,end:true,
+  series:[{name:'Áreas antiguas',short:'Antiguas',color:'var(--s1)',vals:FU.map(d=>d[1]),dy:-4},{name:'Áreas nuevas',short:'Nuevas',color:'var(--s2)',vals:FU.map(d=>d[2]),dy:14}],vFmt:v=>f(v)+' m³ por km'}));
+
+/* cascada de 2025: de dónde sale el número de fin de año */
+reg('e-cascada',(el,W)=>{const H=280,m={t:26,b:44,l:8,r:8},pw=W-m.l-m.r,ph=H-m.t-m.b,max=650,Y=v=>m.t+ph-v/max*ph;
+  const pasos=[['Diciembre de 2024',0,447,'var(--neutral)','447'],['Caen los pozos viejos',281,447,'var(--neg)','− 166'],['Suman los pozos nuevos',281,590,'var(--s1)','+ 309'],['Diciembre de 2025',0,590,'var(--neutral)','590']];
+  const step=pw/4,bw=Math.min(96,step-18);let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="En 2025 la producción arrancó en 447 mil barriles por día, los pozos existentes perdieron 166, los nuevos sumaron 309 y terminó en 590.">`;
+  pasos.forEach(([n,a,b,c,t],i)=>{const x=m.l+step*i+(step-bw)/2,y=Y(b),hh=Y(a)-Y(b);
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${hh}" rx="4" fill="${c}"/><text class="dk" x="${x+bw/2}" y="${y-8}" text-anchor="middle">${t}</text>`;
+    const pal=n.split(' ');const corte=Math.ceil(pal.length/2);
+    s+=`<text class="d" x="${x+bw/2}" y="${H-24}" text-anchor="middle">${W<520?pal.slice(0,corte).join(' '):n}</text>`+(W<520?`<text class="d" x="${x+bw/2}" y="${H-8}" text-anchor="middle">${pal.slice(corte).join(' ')}</text>`:'');
+    if(i<3){const yy=Y(i==1?281:pasos[i][2]);s+=`<line x1="${x+bw}" x2="${x+step}" y1="${yy}" y2="${yy}" stroke="var(--muted)" stroke-dasharray="3 3"/>`}});
+  s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)"/></svg>`;el.innerHTML=s});
+
+reg('e-sin',(el,W)=>bars(el,W,{label:'Sin pozos nuevos la producción bajaría de 670 mil barriles por día en agosto de 2026 a 400 mil un año después y a 222 mil a fines de 2030.',h:230,gap:6,cats:['ago 26','dic 26','ago 27','dic 27','dic 28','dic 29','dic 30'],catAt:i=>W>=420||i%2==0,
+  series:[{name:'Producción',vals:[670,530,400,363,290,248,222],color:'var(--s1)'}],fmt:v=>f(v),unit:' mil barriles/día',colorAt:i=>i==0?'var(--s1)':'var(--o1)'}));
+
+/* simulador: los pozos de hoy siguen su curva; a eso se le suman N pozos nuevos por año */
+const BASE=[669.8,593.1,530,483.2,448.3,423.5,400.4,380.6,362.9,346.9,333.7,321.2,309.4,299.6,290,282.8,274.2,267.4,260.6,254.9,248,244.1,239.6,234.7,230.6,227.5,221.6];
+const APORTE=[0,.08075,.24079,.38344,.49524,.58594,.6635,.73324,.79694,.85473,.90747,.95644,1.00269,1.04648,1.08675,1.12497,1.16067,1.19577,1.22894,1.26046,1.29038,1.31971,1.34764,1.37458,1.40092,1.4266,1.45128];
+const sx=BASE.map((_,i)=>{const d=new Date(2026,7+2*i,1);return MES[d.getMonth()]+' '+d.getFullYear()});
+let simN=470;
+const simular=n=>BASE.map((b,i)=>Math.round(b+n*APORTE[i]));
+reg('e-sim',(el,W)=>line(el,W,{label:'Proyección de la producción de petróleo hasta 2030 según cuántos pozos nuevos se conecten por año.',x:sx,xTip:x=>x,h:300,
+  xTicks:sx.map((x,i)=>[i,x.slice(-4)]).filter(([i])=>i==2||i==8||i==14||i==20||i==26),yMax:1200,yStep:200,end:true,
+  series:[{name:'El millón',short:'1 millón',color:'var(--neutral)',vals:BASE.map(()=>1000),dy:-6},{name:'Nivel de hoy',short:'Hoy',color:'var(--neutral)',vals:BASE.map(()=>670),dy:14},{name:'Sin perforar',short:'Sin perforar',color:'var(--o1)',vals:BASE.map(v=>Math.round(v))},{name:'Con '+simN+' pozos por año',short:simN+' pozos',color:'var(--s1)',vals:simular(simN)}],vFmt:v=>f(v)+' mil barriles/día'}));
+function simTexto(){const fin=simular(simN)[26],r=$('s-txt');$('s-n').textContent=simN;
+  const cmp=fin>=1000?'Alcanza para el millón de barriles.':fin>=670?'Se crece, pero no se llega al millón.':fin>=640?'Apenas se mantiene el nivel de hoy.':'No alcanza ni para mantenerse: la producción baja.';
+  r.innerHTML=`Con <strong>${simN} pozos nuevos por año</strong>, a fines de 2030 se producirían unos <strong>${f(fin)} mil barriles por día</strong>. ${cmp}`}
+$('s-range').oninput=e=>{simN=+e.target.value;simTexto();charts.forEach(d=>d())};simTexto();
+
+const DESC=['Más pozos','Ramas más largas','Rendimiento por km'];
+const desc=(id,vals,label)=>reg(id,(el,W)=>divbars(el,W,{label,h:230,cats:W<420?['Pozos','Ramas','Rendim.']:DESC,vals,fmt:v=>(v<0?'−':'+')+f(Math.abs(v))+' %',labelAt:()=>true,colorAt:(i,v)=>v<0?'var(--neg)':'var(--s1)'}));
+desc('e-desc1',[52,36,11],'Entre 2016 y 2021, el 52 % del crecimiento vino de tener más pozos, el 36 % de ramas más largas y el 11 % de más rendimiento por kilómetro.');
+desc('e-desc2',[121,29,-49],'Entre 2021 y 2024, tener más pozos explica el 121 % del crecimiento y las ramas más largas el 29 %; el rendimiento por kilómetro restó 49 %.');
+
+const PAIS=[[2010,589,531,0],[2011,553,515,1],[2012,549,530,3],[2013,540,527,7],[2014,532,527,17],[2015,532,536,22],[2016,511,511,29],[2017,480,500,37],[2018,489,470,57],[2019,509,476,90],[2020,481,417,113],[2021,514,472,163],[2022,583,489,243],[2023,635,519,306],[2024,701,522,387],[2025,787,537,493]];
+reg('e-pais',(el,W)=>line(el,W,{label:'El país pasó de producir 589 mil barriles por día en 2010 a 787 mil en 2025; las refinerías procesan unos 530 mil todo el período y Vaca Muerta pasó de cero a 493 mil.',x:PAIS.map(d=>d[0]),xTip:a=>'Año '+a,
+  xTicks:PAIS.map((d,i)=>[i,String(d[0])]).filter(([i])=>i%(W<520?5:2)==0),yMax:800,yStep:200,end:true,
+  series:[{name:'Produce el país',short:'País',color:'var(--ink2)',vals:PAIS.map(d=>d[1])},{name:'Procesan las refinerías',short:'Refinerías',color:'var(--s2)',vals:PAIS.map(d=>d[2]),dy:-2},{name:'Vaca Muerta',short:'V. Muerta',color:'var(--s1)',vals:PAIS.map(d=>d[3]),dy:12}],vFmt:v=>f(v)+' mil barriles/día'}));
+
+const BAL=[[2012,-2150],[2013,-6902],[2014,-6478],[2015,-4706],[2016,-2879],[2017,-3245],[2018,-2355],[2019,-26],[2020,953],[2021,-558],[2022,-4359],[2023,-13],[2024,5730],[2025,7829],[2026,7834]];
+reg('e-bal',(el,W)=>divbars(el,W,{label:'El saldo energético del país pasó de menos 6.902 millones de dólares en 2013 a más 7.829 en 2025.',h:250,cats:BAL.map(d=>"'"+String(d[0]).slice(2)),catTip:c=>'20'+c.slice(1),catAt:i=>i%2==1,
+  vals:BAL.map(d=>d[1]),fmt:v=>(v<0?'−':'+')+f(Math.abs(v)),unit:' millones de USD',labelAt:i=>[1,13].includes(i),colorAt:(i,v)=>i==14?'var(--neutral)':v<0?'var(--neg)':'var(--s1)'}));
+
+const xs=MENS.map(d=>d[0]),i19=xs.indexOf('2019-01'),xg=xs.slice(i19);
+reg('e-gas',(el,W)=>line(el,W,{label:'El gas de Vaca Muerta sube cada invierno y cae cada primavera, con caídas cada vez más grandes.',x:xg,xTip:mesTxt,xTicks:xg.map((d,i)=>[i,d]).filter(([i,d])=>d.endsWith('-07')&&(W>=520||+d.slice(0,4)%2==0)).map(([i,d])=>[i,d.slice(0,4)]),yMax:100,yStep:20,
+  series:[{name:'Gas',color:'var(--s3)',vals:MENS.slice(i19).map(d=>d[2]),area:true}],vFmt:v=>f(v,1)+' millones de m³/día',
+  markColor:'var(--s3)',marks:[{i:xg.indexOf('2025-07'),v:91.1,t:'invierno',dx:-8,dy:-10,anchor:'end'},{i:xg.indexOf('2025-11'),v:64.1,t:'primavera',dx:-8,dy:22,anchor:'end'}]}));
+
+const HH=[[2019,3.16,2.57],[2020,2.22,2.03],[2021,2.86,3.91],[2022,2.94,6.42],[2023,2.78,2.54],[2024,2.92,2.19],[2025,2.92,3.53],[2026,2.95,4.02]];
+reg('e-hh',(el,W)=>line(el,W,{label:'El precio del gas en Neuquén se mantuvo cerca de 2,9 dólares por millón de BTU entre 2021 y 2026 mientras el de Estados Unidos osciló entre 2,2 y 6,4.',x:HH.map(d=>d[0]),xTip:a=>'Año '+a,h:240,
+  xTicks:HH.map((d,i)=>[i,String(d[0])]).filter(([i])=>i%2==1),yMax:8,yStep:2,end:true,
+  series:[{name:'Estados Unidos',short:'EE. UU.',color:'var(--ink2)',vals:HH.map(d=>d[2]),dy:-4},{name:'Neuquén',color:'var(--s3)',vals:HH.map(d=>d[1]),dy:14}],vFmt:v=>f(v,2)+' USD'}));
+reg('e-pron',(el,W)=>bars(el,W,{label:'Las empresas pronostican que de 2026 a 2029 el petróleo crezca 24 % y el gas 2 %.',h:240,gap:20,yMax:30,cats:['Petróleo','Gas'],series:[{name:'Crecimiento esperado',vals:[24,2],color:'var(--s1)'}],fmt:v=>'+ '+f(v)+' %',colorAt:i=>i==0?'var(--s1)':'var(--s3)'}));
+
+/* ---------- pozo interactivo ---------- */
+(function(){
+  const svg=$('w-svg'),K=540/3065,x0=96,ys=64,yd=236,xh=x0+22;
+  const base=`<rect x="0" y="${yd-30}" width="760" height="60" fill="var(--rock)"/>
+   <text class="dk" x="748" y="${yd-12}" text-anchor="end">Vaca Muerta</text>
+   <line x1="0" x2="760" y1="${ys}" y2="${ys}" stroke="var(--ink2)" stroke-width="1.5"/>
+   <path d="M${x0-16},${ys}L${x0},${ys-40}L${x0+16},${ys}Z" fill="none" stroke="var(--ink)" stroke-width="1.5"/><line x1="${x0}" x2="${x0}" y1="${ys-40}" y2="${ys}" stroke="var(--ink)" stroke-width="1.5"/>
+   <text class="d" x="${x0+26}" y="${ys-14}">superficie</text>
+   <line x1="${x0-28}" x2="${x0-28}" y1="${ys+6}" y2="${yd-36}" stroke="var(--muted)" stroke-dasharray="2 4"/><text class="d" transform="translate(${x0-36},${(ys+yd)/2}) rotate(-90)" text-anchor="middle">unos 3.000 m</text>
+   <line x1="${xh}" x2="${xh+1000*K}" y1="306" y2="306" stroke="var(--ink2)" stroke-width="1.5"/><line x1="${xh}" x2="${xh}" y1="301" y2="311" stroke="var(--ink2)" stroke-width="1.5"/><line x1="${xh+1000*K}" x2="${xh+1000*K}" y1="301" y2="311" stroke="var(--ink2)" stroke-width="1.5"/><text x="${xh+1000*K+8}" y="310">1 km</text>
+   <line x1="${xh}" x2="${xh+DIS[0].rama*K}" y1="${yd+22}" y2="${yd+22}" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/><text x="${xh+DIS[0].rama*K+6}" y="${yd+26}">rama de 2016</text>`;
+  const max={rama:3065,et:50,arena:11761,oil:39545,km:16846};
+  const defs=[['rama','Rama horizontal',' m',0],['et','Etapas de fractura','',0],['arena','Arena inyectada',' t',0],['oil','Petróleo del primer año',' m³',1],['km','Petróleo por km de rama',' m³',1]];
+  $('w-stats').innerHTML=defs.map(d=>`<div class="stat${d[3]?' flat':''}"><small>${d[1]}</small><b id="ws-${d[0]}"></b><div class="bar"><i id="wb-${d[0]}"></i></div></div>`).join('');
+  function draw(y){const d=DIS[y-2016],xe=xh+d.rama*K;let t='';
+    for(let i=0;i<d.et;i++){const x=xh+14+(xe-xh-18)*i/(d.et-1);t+=`<line x1="${x}" x2="${x}" y1="${yd-11}" y2="${yd+11}" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>`}
+    svg.innerHTML=base+t+`<path d="M${x0},${ys}V${yd-22}Q${x0},${yd} ${xh},${yd}H${xe}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+      <text class="dk" x="${Math.min(xe,700)}" y="${yd-40}" text-anchor="end">rama: ${f(d.rama)} m · ${d.et} etapas</text>`;
+    $('w-year').textContent=y;
+    for(const k of defs){$('ws-'+k[0]).textContent=f(d[k[0]])+k[2];$('wb-'+k[0]).style.width=(d[k[0]]/max[k[0]]*100)+'%'}}
+  const r=$('w-range'),b=$('w-play');let timer=null;
+  function stop(){clearInterval(timer);timer=null;b.textContent='Reproducir'}
+  r.oninput=()=>{stop();draw(+r.value)};
+  b.onclick=()=>{if(timer)return stop();if(+r.value>=2025)r.value=2016;draw(+r.value);b.textContent='Pausar';
+    timer=setInterval(()=>{if(+r.value>=2025)return stop();r.value=+r.value+1;draw(+r.value)},850)};
+  draw(2016);
+})();
+
+
+/* ---------- esquema: un pozo nuevo entre dos viejos, visto desde arriba ---------- */
+$('e-padre-esq').innerHTML=(()=>{const rama=(y,c,w)=>`<line x1="70" x2="390" y1="${y}" y2="${y}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/><circle cx="70" cy="${y}" r="5" fill="${c}"/>`;
+  let s=`<rect x="0" y="0" width="440" height="236" fill="var(--rock)" opacity=".5"/>`;
+  [62,188].forEach(y=>{s+=`<ellipse cx="230" cy="${y}" rx="178" ry="44" fill="var(--neutral)" opacity=".7"/>`});
+  s+=rama(62,'var(--ink2)',3)+rama(188,'var(--ink2)',3)+rama(125,'var(--s2)',3);
+  s+=`<text class="dk" x="76" y="46">pozo viejo (padre)</text><text class="dk" x="76" y="212">pozo viejo (padre)</text><text class="dk" x="76" y="118" style="fill:var(--s2)">pozo nuevo (hijo)</text>
+   <text class="d" x="230" y="252" text-anchor="middle">las manchas son la roca que cada padre ya vació</text>
+   <line x1="410" x2="410" y1="62" y2="125" stroke="var(--ink2)"/><line x1="405" x2="415" y1="62" y2="62" stroke="var(--ink2)"/><line x1="405" x2="415" y1="125" y2="125" stroke="var(--ink2)"/><text x="404" y="98" text-anchor="end">&lt; 300 m</text>`;return s})();
+
+/* ---------- a dónde va cada barril ---------- */
+$('d-flujo').innerHTML=(()=>{const tot=615,parts=[['Por barco',249,'var(--s1)'],['Oleoducto a Chile',75,'var(--s2)'],['Queda en el país',291,'var(--neutral)']],Hh=190,gap=14,k=Hh/tot,xl=10,wl=16,xr=250,top=30;
+  let s=`<rect x="${xl}" y="${top}" width="${wl}" height="${Hh}" fill="var(--ink2)" rx="3"/><text class="dk" x="${xl}" y="${top-10}">Producción: 615</text>`,yl=top,yr=top-gap;
+  parts.forEach(([n,v,c])=>{const h=v*k;yr+=gap;const x1=xl+wl,mx=(x1+xr)/2;
+    s+=`<path d="M${x1},${yl}C${mx},${yl} ${mx},${yr} ${xr},${yr}V${yr+h}C${mx},${yr+h} ${mx},${yl+h} ${x1},${yl+h}Z" fill="${c}" opacity=".35"/><rect x="${xr}" y="${yr}" width="${wl}" height="${h}" fill="${c}" rx="3"/>
+     <text class="dk" x="${xr+wl+10}" y="${yr+h/2-2}">${n}</text><text class="d" x="${xr+wl+10}" y="${yr+h/2+15}">${v} · ${Math.round(v/tot*100)} %</text>`;yl+=h;yr+=h});
+  return s})();
+</script>
+</body>
+</html>
