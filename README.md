@@ -1,5 +1,7 @@
 # Vaca Muerta en datos
 
+*[English version](README.en.md)*
+
 Análisis en SQL de la formación Vaca Muerta, en Neuquén, con veintitrés fuentes abiertas, la mayoría de la Secretaría de Energía de Argentina. Cuarenta y dos preguntas, de 2006 a agosto de 2026, que arman una sola historia.
 
 - **[Vaca Muerta explicado](https://ftornello.github.io/vaca-muerta-well-productivity/)**: la historia completa en cinco ideas, con esquemas, gráficos y un simulador. Es el mejor lugar para empezar.
